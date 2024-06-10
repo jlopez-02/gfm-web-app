@@ -1,0 +1,24 @@
+.dropdown-generacion-container select {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  margin-bottom: 30px;
+  border: 3px solid var(--background-secondary-color);
+  border-radius: 3px;
+  background: var(--background-color);
+  color: var(--active-color);
+  font-size: 16px;
+  font-weight: bold;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+
+
+  & > option {
+    background: var(--background-color);
+    color: var(--reverse-color);
+    border: 3px solid var(--background-secondary-color);
+  }
+}
+
