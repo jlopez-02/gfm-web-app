@@ -11,7 +11,6 @@ import useTheme from './hooks/useTheme.js';
 
 function App() {
   const [theme, toggleTheme] = useTheme();
-
   return (
     <Router>
       <div className="App">
@@ -28,5 +27,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;

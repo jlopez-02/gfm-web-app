@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Dropdown from "../Dropdown/Dropdown";
+import GrafanaPanel from "../GrafanaPanel/GrafanaPanel";
 
 const Generacion = ({ theme }) => {
   const [selectedId, setSelectedId] = useState("985dad369259");
@@ -20,53 +21,25 @@ const Generacion = ({ theme }) => {
     <div className="generacion-container">
       <div className="c1-generacion-container">
         <div className="all-clients">
-          <iframe
-            title="AllClientsTable"
-            src={table_url}
-            frameBorder={0}
-          ></iframe>
+          <GrafanaPanel title={"AllClientsTable"} src={table_url}/>
         </div>
       </div>
 
       <div className="c2-generacion-container">
         <div className="selected-client">
           <Dropdown selectedId={selectedId} setSelectedId={setSelectedId} />
-          <iframe
-            title="SelectedClient"
-            src={graph_url}
-            frameBorder={0}
-          ></iframe>
+          <GrafanaPanel title={"SelectedClient"} src={graph_url} />
         </div>
 
         <div className="total-generation">
           <div className="total-generation-c1">
-            <iframe
-              title="TotalGeneration"
-              src={total_generation}
-              frameBorder={0}
-            ></iframe>
+            <GrafanaPanel title={"TotalGeneration"} src={total_generation}/>
           </div>
           <div className="total-generation-c2">
-            <iframe
-              title="Bateria"
-              src={battery}
-              frameborder={0}
-            ></iframe>
-            <iframe
-              title="Produccion"
-              src={production}
-              frameborder={0}
-            ></iframe>
-            <iframe
-              title="Potencia"
-              src={power}
-              frameborder={0}
-            ></iframe>
-            <iframe
-              title="Ratio"
-              src={ratio}
-              frameborder={0}
-            ></iframe>
+            <GrafanaPanel title={"Bateria"} src={battery}/>
+            <GrafanaPanel title={"Produccion"} src={production}/>
+            <GrafanaPanel title={"Potencia"} src={power}/>
+            <GrafanaPanel title={"Ratio"} src={ratio}/>
           </div>
         </div>
       </div>
