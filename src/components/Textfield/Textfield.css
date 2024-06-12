@@ -1,0 +1,51 @@
+.Textfield {
+  display: flex;
+  align-items: center;
+
+  & .custom-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--active-color);
+    margin-right: 10px;
+  }
+
+}
+
+
+
+.custom-textfield {
+  -moz-appearance: textfield;
+  appearance: textfield;
+  width: 100%;
+  max-width: 60px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border: 3px solid var(--background-secondary-color);
+  border-radius: 3px;
+  background-color: var(--background-color);
+  color: var(--active-color);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.custom-textfield::placeholder {
+  color: var(--active-color);
+}
+
+.custom-textfield:focus {
+  outline: none;
+  border-color: var(--active-color);
+}
+
+/* Ocultar flechas predeterminadas */
+.custom-textfield::-webkit-outer-spin-button,
+.custom-textfield::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.custom-textfield::-moz-inner-spin-button {
+  -moz-appearance: none;
+  margin: 0;
+}

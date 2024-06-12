@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleHalfStroke } from "@fortawesome/free-solid-svg-icons";
 import "./Header.css";
 
-const Header = ({ theme, changeTheme }) => {
+const Header = ({ changeTheme }) => {
   
   return (
     <div className="header">

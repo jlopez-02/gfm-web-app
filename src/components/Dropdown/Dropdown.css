@@ -1,24 +1,81 @@
-.dropdown-generacion-container select {
+.Dropdown {
+  display: flex;
+  align-items: center;
+
+  & .custom-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--active-color);
+    margin-right: 10px;
+  }
+}
+
+.custom-select-container {
+  position: relative;
+  font-family: Arial, sans-serif;
+  min-width: 200px;
   width: 100%;
-  max-width: 300px;
-  padding: 10px;
-  margin-bottom: 30px;
-  border: 3px solid var(--background-secondary-color);
-  border-radius: 3px;
-  background: var(--background-color);
+}
+
+
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.select-selected {
+  background-color: var(--background-color);;
   color: var(--active-color);
+  padding: 10px;
   font-size: 16px;
   font-weight: bold;
-  appearance: none;
-  outline: none;
+  border: 3px solid var(--background-secondary-color);
+  border-radius: 3px;
   cursor: pointer;
+  position: relative;
   text-align: center;
+}
 
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: var(--active-color) transparent transparent transparent;
+}
 
-  & > option {
-    background: var(--background-color);
-    color: var(--reverse-color);
-    border: 3px solid var(--background-secondary-color);
-  }
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+.select-items {
+  position: absolute;
+  background-color: var(--background-color);
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  border: 3px solid var(--background-secondary-color);
+  border-radius: 3px;
+  text-align: center;
+}
+
+.select-items div {
+  color: var(--reverse-color);
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: var(--active-color);
+}
+
+.select-hide {
+  display: none;
 }
 
