@@ -53,6 +53,7 @@
     }
   }
 
+
   .selected-client {
     display: flex;
     flex-direction: column;

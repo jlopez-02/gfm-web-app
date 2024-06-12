@@ -1,15 +1,22 @@
 import React, { useState } from "react";
+import IP_ADDRESS from './../../misc/config.js'
 import Dropdown from "../Dropdown/Dropdown";
 import GrafanaPanel from "../GrafanaPanel/GrafanaPanel";
 
 const Generacion = ({ theme }) => {
   const [selectedId, setSelectedId] = useState("985dad369259");
 
-  const host_url = "http://localhost:3000/d-solo/b4861807-dfd2-426a-92fc-341254b8cc12";
+  const [loaded, setLoaded] = useState(false);
+
+  const handleLoad = () => {
+    setLoaded(true);
+  };
+
+  const host_url = `http://${IP_ADDRESS}:3000/d-solo/b4861807-dfd2-426a-92fc-341254b8cc12`;
   const refresh_time = "1s";
 
   let table_url = `${host_url}/02-generacion?orgId=1&theme=${theme}&panelId=9`;
-  let graph_url = `${host_url}/02-generacion?orgId=1&var-custom=mostrar&var-portalId=${selectedId}&theme=${theme}&panelId=10&refresh=1m`;
+  let graph_url = `${host_url}/02-generacion?orgId=1&var-custom=mostrar&var-Instalacion=${selectedId}&theme=${theme}&panelId=10&refresh=1m`;
 
   let total_generation = `${host_url}/02-generacion-jle?orgId=1&theme=${theme}&panelId=11&refresh=${refresh_time}`;
   let battery = `${host_url}/02-generacion-jle?orgId=1&theme=${theme}&panelId=14&refresh=${refresh_time}`;
@@ -18,7 +25,7 @@ const Generacion = ({ theme }) => {
   let ratio = `${host_url}/02-generacion-jle?orgId=1&theme=${theme}&panelId=16&refresh=${refresh_time}`;
 
   return (
-    <div className="generacion-container">
+    <div className="generacion-container" style={{ display: loaded ? 'flex' : 'none'}} onLoad={handleLoad}>
       <div className="c1-generacion-container">
         <div className="all-clients">
           <GrafanaPanel title={"AllClientsTable"} src={table_url}/>
@@ -27,7 +34,7 @@ const Generacion = ({ theme }) => {
 
       <div className="c2-generacion-container">
         <div className="selected-client">
-          <Dropdown selectedId={selectedId} setSelectedId={setSelectedId} />
+          <Dropdown selectedId={selectedId} setSelectedId={setSelectedId}/>
           <GrafanaPanel title={"SelectedClient"} src={graph_url} />
         </div>
 

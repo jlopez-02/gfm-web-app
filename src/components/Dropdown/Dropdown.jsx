@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import IP_ADDRESS from '../../misc/config.js'; 
 import "./Dropdown.css";
 
 const Dropdown = ({ selectedId,setSelectedId }) => {
@@ -6,7 +7,7 @@ const Dropdown = ({ selectedId,setSelectedId }) => {
 
   useEffect(() => {
     const query = `show tag values from venus02 with key=portalId`;
-    const url = `http://localhost:8086/query?db=venus&q=${encodeURIComponent(
+    const url = `http://${IP_ADDRESS}:8086/query?db=venus&q=${encodeURIComponent(
       query
     )}`;
 

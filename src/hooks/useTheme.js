@@ -41,6 +41,7 @@ const useTheme = () => {
     Object.keys(themeStyles).forEach((key) => {
       root.style.setProperty(key, themeStyles[key]);
     });
+
   }, [theme]);
 
   return [theme, toggleTheme];

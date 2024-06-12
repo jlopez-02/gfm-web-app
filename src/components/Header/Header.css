@@ -72,3 +72,8 @@
     transform: scale(1.05);
   }
 }
+
+.logo {
+  height: 70px; /* Ajusta el tamaño según tus necesidades */
+  width: auto;
+}
