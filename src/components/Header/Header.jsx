@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleHalfStroke } from "@fortawesome/free-solid-svg-icons";
 import "./Header.css";
 
-const Header = ({ changeTheme }) => {
+const Header = ({ changeTheme, reloadComponents }) => {
   
   return (
     <div className="header">
@@ -18,7 +18,7 @@ const Header = ({ changeTheme }) => {
             <NavLink to="/mapa">Mapa</NavLink>
           </li>
           <li>
-            <NavLink to="/generacion">Generación</NavLink>
+            <NavLink to="/generacion" onClick={reloadComponents}>Generación</NavLink>
           </li>
           <li>
             <NavLink to="/consumo">Consumo</NavLink>
@@ -31,7 +31,10 @@ const Header = ({ changeTheme }) => {
           </li>
 
           <li className="theme-icon-li">
-              <FontAwesomeIcon className="theme-icon" icon={faCircleHalfStroke} onClick={changeTheme}/>
+              <FontAwesomeIcon className="theme-icon" icon={faCircleHalfStroke} onClick={() => {
+                changeTheme();
+                reloadComponents();
+              } }/>
           </li>
           
           <li className="logout">

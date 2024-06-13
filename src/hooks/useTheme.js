@@ -19,6 +19,7 @@ const useTheme = () => {
   };
 
   useEffect(() => {
+
     const root = document.documentElement;
 
     const lightTheme = {
@@ -49,6 +50,7 @@ const useTheme = () => {
 
     const themeStyles = theme === 'light' ? lightTheme : darkTheme;
 
+    
     Object.keys(themeStyles).forEach((key) => {
       root.style.setProperty(key, themeStyles[key]);
     });

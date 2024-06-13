@@ -71,12 +71,18 @@
     .selected-client-toolbar{
       display: flex;
       flex-direction: row;
-      justify-content: center;
       margin-bottom: 20px;
-
-      & > *{
-        margin-inline: 30px;
+      padding-inline: 20px;
+      .timestamp-tool{
+        display: flex;
+        flex-direction: row;
+        
+        & > * {
+          margin-inline: 10px;
+        }
       }
+
+      justify-content: space-between;
     }
   }
 

@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import "./Textfield.css";
 
-const Textfield = ({ label="Label", min = 0, max=365 }) => {
-    const [value, setValue] = useState('');
+const Textfield = ({ label="Label", min = 0, max=365, value, defaulValue, onChange}) => {
 
-    const handleChange = (e) => {
-      let newValue = e.target.value;
-      if (newValue === '') {
-        setValue('');
+  const handleChange = (e) => {
+    let newValue = e.target.value;
+    if (newValue === '' || newValue < min) {
+        newValue = min;
+        onChange(newValue);
         return;
-      }
-      if (newValue.match(/^[0-9]*$/)) {
+    }
+    if (newValue.match(/^[0-9]*$/)) {
         newValue = Math.max(min, Math.min(Number(newValue), max));
-        setValue(newValue);
-      }
-    };
+        onChange(newValue);
+    }
+};
 
   return (
     <div className="Textfield">

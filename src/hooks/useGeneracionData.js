@@ -28,7 +28,7 @@ const useGeneracionData = () => {
       .catch((error) => console.error("Error querying InfluxDB:", error));
   }, []);
 
-  return { data, selectedId, setSelectedId };
+  return { data, selectedId, setSelectedId};
 };
 
 export default useGeneracionData;
