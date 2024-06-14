@@ -27,7 +27,7 @@ const Generacion = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
     ) {
       handleLoad();
     }
-  }, [panelsLoaded]);
+  }, [handleLoad, panelsLoaded]);
 
   const handlePanelLoad = (panelTitle) => {
     setPanelsLoaded((prev) => ({ ...prev, [panelTitle]: true }));
@@ -37,7 +37,7 @@ const Generacion = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
 
   return (
     <div
-      key={loadKey}
+      key={`generacion-${loadKey}`}
       className="generacion-container"
       style={{ display: delayedLoad ? "flex" : "none" }}
       onLoad={handleLoad}
@@ -46,7 +46,7 @@ const Generacion = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
         <div className="all-clients">
           <GrafanaPanel
             title={"AllClientsTable"}
-            src={urls.table_url}
+            src={urls.gen_table_url}
             onLoad={() => handlePanelLoad("AllClientsTable")}
           />
         </div>
@@ -79,22 +79,22 @@ const Generacion = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
               <UpdateButton onClicked={handleButtonClick} />
             </div>
           </div>
-          <GrafanaPanel title={"SelectedClient"} src={urls.graph_url} onLoad={() => handlePanelLoad("SelectedClient")}/>
+          <GrafanaPanel title={"SelectedClient"} src={urls.gen_selected_client} onLoad={() => handlePanelLoad("SelectedClient")}/>
         </div>
 
         <div className="total-generation">
           <div className="total-generation-c1">
             <GrafanaPanel
               title={"TotalGeneration"}
-              src={urls.total_generation}
+              src={urls.gen_total_generation}
               onLoad={() => handlePanelLoad("TotalGeneration")}
             />
           </div>
           <div className="total-generation-c2">
-            <GrafanaPanel title={"Bateria"} src={urls.battery} onLoad={() => handlePanelLoad("Bateria")}/>
-            <GrafanaPanel title={"Produccion"} src={urls.production} onLoad={() => handlePanelLoad("Produccion")}/>
-            <GrafanaPanel title={"Potencia"} src={urls.power} onLoad={() => handlePanelLoad("Potencia")}/>
-            <GrafanaPanel title={"Ratio"} src={urls.ratio} onLoad={() => handlePanelLoad("Ratio")}/>
+            <GrafanaPanel title={"Bateria"} src={urls.gen_battery} onLoad={() => handlePanelLoad("Bateria")}/>
+            <GrafanaPanel title={"Produccion"} src={urls.gen_production} onLoad={() => handlePanelLoad("Produccion")}/>
+            <GrafanaPanel title={"Potencia"} src={urls.gen_power} onLoad={() => handlePanelLoad("Potencia")}/>
+            <GrafanaPanel title={"Ratio"} src={urls.gen_ratio} onLoad={() => handlePanelLoad("Ratio")}/>
           </div>
         </div>
       </div>

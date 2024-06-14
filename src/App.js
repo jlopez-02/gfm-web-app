@@ -19,7 +19,7 @@ function App() {
     setLoaded(true);
     setTimeout(() => {
       setDelayedLoad(true);
-    }, 500);
+    }, 1000);
   };
 
   const reloadComponents = () => {
@@ -36,8 +36,8 @@ function App() {
         <Header theme={theme} changeTheme={toggleTheme} reloadComponents={reloadComponents}/>
         <Routes>
           <Route path="/mapa" element={<Mapa theme={theme} />} />
-          <Route path="/generacion" element={<Generacion theme={theme} handleLoad={handleLoad} loaded={loaded} delayedLoad={delayedLoad} loadKey={loadKey}/>} />
-          <Route path="/consumo" element={<Consumo />} />
+          <Route path="/generacion" element={<Generacion theme={theme} handleLoad={handleLoad} loaded={loaded} delayedLoad={delayedLoad} loadKey={loadKey}/>}/>
+          <Route path="/consumo" element={<Consumo theme={theme} handleLoad={handleLoad} loaded={loaded} delayedLoad={delayedLoad} loadKey={loadKey}/>}/>
           <Route path="/mediciones" element={<Mediciones />} />
           <Route path="/avisos" element={<Avisos />} />
           <Route path="/" element={<Mapa />} />

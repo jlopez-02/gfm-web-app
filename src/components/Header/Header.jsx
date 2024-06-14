@@ -21,7 +21,7 @@ const Header = ({ changeTheme, reloadComponents }) => {
             <NavLink to="/generacion" onClick={reloadComponents}>Generación</NavLink>
           </li>
           <li>
-            <NavLink to="/consumo">Consumo</NavLink>
+            <NavLink to="/consumo" onClick={reloadComponents}>Consumo</NavLink>
           </li>
           <li>
             <NavLink to="/mediciones">Mediciones</NavLink>
