@@ -1,4 +1,3 @@
-// src/hooks/useGeneracionData.js
 import { useState, useEffect } from "react";
 import IP_ADDRESS from '../misc/config';
 
@@ -20,7 +19,7 @@ const useGeneracionData = () => {
       .then((data) => {
         const formattedData = data.results[0]?.series[0]?.values.map(
           (item) => ({
-            portalId: item[1],
+            id: item[1],
           })
         );
         setData(formattedData);

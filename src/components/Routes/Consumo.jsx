@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import useGeneracionData from "../../hooks/useGeneracionData";
+import useConsumoData from "../../hooks/useConsumoData";
 import generateGrafanaUrls from "./../../misc/grafana_urls";
 import Dropdown from "../Dropdown/Dropdown";
 import GrafanaPanel from "../GrafanaPanel/GrafanaPanel";
-import Textfield from "../Textfield/Textfield";
+import Textfield from "../Textfield/NumberTextfield";
 import UpdateButton from "../Buttons/UpdateButton";
 
 const Consumo = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
-  const { data, selectedId, setSelectedId } = useGeneracionData();
+  const { data, selectedId, setSelectedId } = useConsumoData();
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(3);
   const [totalHours, setTotalHours] = useState(hours);
@@ -46,7 +46,7 @@ const Consumo = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
         <div className="all-clients">
           <GrafanaPanel
             title={"AllClientsTable"}
-            src={urls.gen_table_url}
+            src={urls.cons_table_url}
             onLoad={() => handlePanelLoad("AllClientsTable")}
           />
         </div>
@@ -79,22 +79,22 @@ const Consumo = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
               <UpdateButton onClicked={handleButtonClick} />
             </div>
           </div>
-          <GrafanaPanel title={"SelectedClient"} src={urls.gen_selected_client} onLoad={() => handlePanelLoad("SelectedClient")}/>
+          <GrafanaPanel title={"SelectedClient"} src={urls.cons_selected_client} onLoad={() => handlePanelLoad("SelectedClient")}/>
         </div>
 
         <div className="total-generation">
           <div className="total-generation-c1">
             <GrafanaPanel
               title={"TotalGeneration"}
-              src={urls.gen_total_generation}
+              src={urls.cons_total_generation}
               onLoad={() => handlePanelLoad("TotalGeneration")}
             />
           </div>
           <div className="total-generation-c2">
-            <GrafanaPanel title={"Bateria"} src={urls.gen_battery} onLoad={() => handlePanelLoad("Bateria")}/>
-            <GrafanaPanel title={"Produccion"} src={urls.gen_production} onLoad={() => handlePanelLoad("Produccion")}/>
-            <GrafanaPanel title={"Potencia"} src={urls.gen_power} onLoad={() => handlePanelLoad("Potencia")}/>
-            <GrafanaPanel title={"Ratio"} src={urls.gen_ratio} onLoad={() => handlePanelLoad("Ratio")}/>
+            <GrafanaPanel title={"Bateria"} src={urls.cons_battery} onLoad={() => handlePanelLoad("Bateria")}/>
+            <GrafanaPanel title={"Produccion"} src={urls.cons_production} onLoad={() => handlePanelLoad("Produccion")}/>
+            <GrafanaPanel title={"Potencia"} src={urls.cons_power} onLoad={() => handlePanelLoad("Potencia")}/>
+            <GrafanaPanel title={"Ratio"} src={urls.cons_ratio} onLoad={() => handlePanelLoad("Ratio")}/>
           </div>
         </div>
       </div>

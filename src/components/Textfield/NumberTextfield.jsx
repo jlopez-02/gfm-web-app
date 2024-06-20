@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Textfield.css";
 
-const Textfield = ({ label="Label", min = 0, max=365, value, defaulValue, onChange}) => {
+const NumberTextfield = ({ label="Label", outLabel = "", min = 0, max=365, value, defaulValue, onChange}) => {
 
   const handleChange = (e) => {
     let newValue = e.target.value;
@@ -28,8 +28,9 @@ const Textfield = ({ label="Label", min = 0, max=365, value, defaulValue, onChan
         value={value}
         onChange={handleChange}
       />
+      {outLabel && <label className="custom-outlabel">{outLabel}</label>}
     </div>
   );
 };
 
-export default Textfield;
+export default NumberTextfield;

@@ -1,15 +1,22 @@
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%; 
 }
-.todo-app {
-  background-color: #efefef;
-  padding: 1.2em;
-  .new-todo{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    input{
-      width: 80% !important;
-    }
+
+.header {
+  flex: 0 0 auto;
+}
+@keyframes animate {
+  0% {
+
+    border-bottom-color: black;
+    border-right-color: black;
+  }
+  100% {
+    border-bottom-color:  #a3e89b;
+    border-right-color: #a3e89b;
   }
 }
+

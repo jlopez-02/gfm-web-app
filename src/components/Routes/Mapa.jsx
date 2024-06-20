@@ -1,5 +1,4 @@
 import React from "react";
-import './Routes.css'
 import GrafanaPanel from "../GrafanaPanel/GrafanaPanel";
 import generateGrafanaUrls from "./../../misc/grafana_urls";
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 //import IP_ADDRESS from '../../misc/config.js';
 import "./Dropdown.css";
 
-const Dropdown = ({ selectedId, setSelectedId, data, customContent, label }) => {
+const Dropdown = ({ selectedId, setSelectedId, data, customContent, label, queryField }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
 
@@ -31,8 +31,8 @@ const Dropdown = ({ selectedId, setSelectedId, data, customContent, label }) => 
   const defaultContent = (
     <>
       {data.map((item, index) => (
-        <div key={index} onClick={() => handleOptionClick(item.portalId)}>
-          {item.portalId}
+        <div key={index} onClick={() => handleOptionClick(item.id)}>
+          {item.id}
         </div>
       ))}
       <div onClick={() => handleOptionClick("Opcion 2")}>Opcion 2</div>

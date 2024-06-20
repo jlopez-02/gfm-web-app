@@ -3,7 +3,7 @@ import useGeneracionData from "../../hooks/useGeneracionData";
 import generateGrafanaUrls from "./../../misc/grafana_urls";
 import Dropdown from "../Dropdown/Dropdown";
 import GrafanaPanel from "../GrafanaPanel/GrafanaPanel";
-import Textfield from "../Textfield/Textfield";
+import Textfield from "../Textfield/NumberTextfield";
 import UpdateButton from "../Buttons/UpdateButton";
 
 const Generacion = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
