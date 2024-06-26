@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import IP_ADDRESS from '../misc/config';
 
-const useConsumoData = () => {
+const useConsumoData = ({id_community}) => {
   const [data, setData] = useState([]);
-  const [selectedId, setSelectedId] = useState("985dad369259");
+  const [selectedId, setSelectedId] = useState();
 
   useEffect(() => {
-    const query = `select id from user_info where "type_id" = 'shelly'`;
-    const url = `http://${IP_ADDRESS}:8086/query?db=users&q=${encodeURIComponent(query)}`;
+    const query = `select ID from user_info Where type_ID = 'shelly' and ID_COMMUNITY = '${id_community}'`;
+    const url = `http://${IP_ADDRESS}:8086/query?db=user_info&q=${encodeURIComponent(query)}`;
 
     fetch(url, {
       method: "GET",
@@ -17,12 +17,15 @@ const useConsumoData = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const formattedData = data.results[0]?.series[0]?.values.map(
-          (item) => ({
-            id: item[1],
-          })
-        );
-        setData(formattedData);
+        if (data.results[0]?.series) {
+          const formattedData = data.results[0]?.series[0]?.values.map(
+            (item) => ({
+              id: item[1],
+            })
+          );
+          setData(formattedData);
+        }
+        
       })
       .catch((error) => console.error("Error querying InfluxDB:", error));
   }, []);

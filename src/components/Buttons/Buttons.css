@@ -1,19 +1,14 @@
 .custom-button {
-    padding: 10px 20px;
-    font-size: 22px;
-    font-weight: bold;
-    color: var(--active-color);
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    &:hover {
-      background-color: var(--active-color);
-      color: var(--background-color);
-      transition: 0.5s;
-    }
-
-
+  padding: 10px 20px;
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--active-color);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--active-color);
+    color: var(--background-color);
+    transition: 0.5s;
   }
-  
-  
-  
+}

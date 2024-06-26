@@ -4,16 +4,20 @@ import Placa from "./../../assets/Placa.svg";
 import Coche from "./../../assets/Coche.svg";
 import Casas from "./../../assets/Casas.svg";
 import Torre from "./../../assets/Torre.svg";
+import useGeneralData from "../../hooks/useGeneralData";
 
-const GeneralPanel = (span = 5) => {
-  const renderSpans = (span) => {
-    const { count } = span;
-    const spans = [];
-    for (let i = 0; i < count; i++) {
-      spans.push(<span></span>);
-    }
-    return spans;
-  };
+const GeneralPanel = ({id_community}) => {
+
+  const { totalEnergy, energy } = useGeneralData(id_community);
+
+  if (totalEnergy === null || energy === null) {
+    return <div>Loading...</div>;
+  }
+
+  const total_energy = totalEnergy ? totalEnergy[0].total_energy : 0;
+  const energy_general = energy ? (energy[0].energy / 1000) : 0;
+
+  const diferencia = energy_general - total_energy;
 
   return (
     <div className="GeneralPanel">
@@ -21,29 +25,27 @@ const GeneralPanel = (span = 5) => {
         <div className="top-left">
           <div className="box yellow">
             <img src={Placa} alt="" />
-            <label>20kWh</label>
+            <label>{parseFloat(total_energy).toFixed(2)} kWh</label>
           </div>
         </div>
         <div className="top-right">
           <div className="box orange">
             <img src={Casas} alt="" />
-            <label>20kWh</label>
+            <label>{(energy_general).toFixed(2)} kWh</label>
           </div>
         </div>
         <div className="bottom-left">
           <div className="box red">
             <img src={Torre} alt="" />
-            <label>20kWh</label>
+            <label>{(diferencia).toFixed(2)} kWh</label>
           </div>
         </div>
         <div className="bottom-right">
           <div className="box orange">
             <img src={Coche} alt="" />
-            <label>20kWh</label>
+            <label>No data kWh</label>
           </div>
         </div>
-
-        {/* Arrows */}
 
         <div className="center-center">
           <div className="centered-box">

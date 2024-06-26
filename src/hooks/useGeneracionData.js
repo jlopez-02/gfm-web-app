@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import IP_ADDRESS from '../misc/config';
 
-const useGeneracionData = () => {
+const useGeneracionData = ({id_community}) => {
   const [data, setData] = useState([]);
-  const [selectedId, setSelectedId] = useState("985dad369259");
-
+  const [selectedId, setSelectedId] = useState();
   useEffect(() => {
-    const query = `show tag values from venus02 with key=portalId`;
-    const url = `http://${IP_ADDRESS}:8086/query?db=venus&q=${encodeURIComponent(query)}`;
+    const query = `select ID from user_info Where type_ID = 'venus' and ID_COMMUNITY = '${id_community}'`;
+    const url = `http://${IP_ADDRESS}:8086/query?db=user_info&q=${encodeURIComponent(query)}`;
 
     fetch(url, {
       method: "GET",

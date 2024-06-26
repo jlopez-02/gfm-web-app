@@ -3,7 +3,7 @@ import GeneralPanel from "../Panel/GeneralPanel";
 import GrafanaPanel from "../GrafanaPanel/GrafanaPanel";
 import generateGrafanaUrls from "./../../misc/grafana_urls";
 
-const General = ({ theme, delayedLoad, handleLoad }) => {
+const General = ({ theme, delayedLoad, handleLoad, id_community }) => {
   const [panelsLoaded, setPanelsLoaded] = useState({});
   
   useEffect(() => {
@@ -24,7 +24,7 @@ const General = ({ theme, delayedLoad, handleLoad }) => {
     <div className="general-container">
       <div className="c1-general-container">
         <div className="a">
-          <GeneralPanel />
+          <GeneralPanel id_community={id_community}/>
         </div>
       </div>
       <div className="c2-general-container">

@@ -3,22 +3,21 @@ import useConsumoData from "../../hooks/useConsumoData";
 import generateGrafanaUrls from "./../../misc/grafana_urls";
 import Dropdown from "../Dropdown/Dropdown";
 import GrafanaPanel from "../GrafanaPanel/GrafanaPanel";
-import Textfield from "../Textfield/NumberTextfield";
-import UpdateButton from "../Buttons/UpdateButton";
+import RangeCalendar from "../Calendar/RangeCalendar";
 
-const Consumo = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
-  const { data, selectedId, setSelectedId } = useConsumoData();
-  const [days, setDays] = useState(0);
-  const [hours, setHours] = useState(3);
-  const [totalHours, setTotalHours] = useState(hours);
+const Consumo = ({
+  theme,
+  loaded,
+  delayedLoad,
+  handleLoad,
+  loadKey,
+  id_community,
+}) => {
+  const { data, selectedId, setSelectedId } = useConsumoData({ id_community });
   const [panelsLoaded, setPanelsLoaded] = useState({});
 
-  const handleButtonClick = () => {
-    const daysValue = days ? parseInt(days) : 0;
-    const hoursValue = hours ? parseInt(hours) : 0;
-    const totalHours = daysValue * 24 + hoursValue;
-    setTotalHours(totalHours);
-  };
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   useEffect(() => {
     if (
@@ -33,7 +32,13 @@ const Consumo = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
     setPanelsLoaded((prev) => ({ ...prev, [panelTitle]: true }));
   };
 
-  const urls = generateGrafanaUrls(theme, selectedId, totalHours);
+  const urls = generateGrafanaUrls(
+    theme,
+    selectedId,
+    startDate,
+    endDate,
+    id_community
+  );
 
   return (
     <div
@@ -54,32 +59,29 @@ const Consumo = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
 
       <div className="c2-generacion-container">
         <div className="selected-client">
-          <div className="selected-client-toolbar">
-            <Dropdown
-              label={"Cliente"}
-              selectedId={selectedId}
-              setSelectedId={setSelectedId}
-              data={data}
-            />
-            <div className="timestamp-tool">
-              <Textfield
-                label={"Dias"}
-                min={0}
-                max={3650}
-                value={days}
-                onChange={setDays}
+          <div className="selected-client-container">
+            <div className="selected-client-toolbar">
+              <Dropdown
+                label={"Cliente"}
+                selectedId={selectedId}
+                setSelectedId={setSelectedId}
+                data={data}
               />
-              <Textfield
-                label={"Horas"}
-                min={0}
-                max={24}
-                value={hours}
-                onChange={setHours}
-              />
-              <UpdateButton onClicked={handleButtonClick} />
+              <div className="timestamp-tool">
+                <RangeCalendar
+                  startDate={startDate}
+                  setStartDate={setStartDate}
+                  endDate={endDate}
+                  setEndDate={setEndDate}
+                />
+              </div>
             </div>
+            <GrafanaPanel
+              title={"SelectedClient"}
+              src={urls.cons_selected_client}
+              onLoad={() => handlePanelLoad("SelectedClient")}
+            />
           </div>
-          <GrafanaPanel title={"SelectedClient"} src={urls.cons_selected_client} onLoad={() => handlePanelLoad("SelectedClient")}/>
         </div>
 
         <div className="total-generation">
@@ -91,10 +93,26 @@ const Consumo = ({ theme, loaded, delayedLoad, handleLoad, loadKey }) => {
             />
           </div>
           <div className="total-generation-c2">
-            <GrafanaPanel title={"Bateria"} src={urls.cons_battery} onLoad={() => handlePanelLoad("Bateria")}/>
-            <GrafanaPanel title={"Produccion"} src={urls.cons_production} onLoad={() => handlePanelLoad("Produccion")}/>
-            <GrafanaPanel title={"Potencia"} src={urls.cons_power} onLoad={() => handlePanelLoad("Potencia")}/>
-            <GrafanaPanel title={"Ratio"} src={urls.cons_ratio} onLoad={() => handlePanelLoad("Ratio")}/>
+            <GrafanaPanel
+              title={"Bateria"}
+              src={urls.cons_battery}
+              onLoad={() => handlePanelLoad("Bateria")}
+            />
+            <GrafanaPanel
+              title={"Produccion"}
+              src={urls.cons_production}
+              onLoad={() => handlePanelLoad("Produccion")}
+            />
+            <GrafanaPanel
+              title={"Potencia"}
+              src={urls.cons_power}
+              onLoad={() => handlePanelLoad("Potencia")}
+            />
+            <GrafanaPanel
+              title={"Ratio"}
+              src={urls.cons_ratio}
+              onLoad={() => handlePanelLoad("Ratio")}
+            />
           </div>
         </div>
       </div>

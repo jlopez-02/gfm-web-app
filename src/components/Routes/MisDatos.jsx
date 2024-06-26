@@ -3,18 +3,18 @@ import MisConsumosPanel from "../Panel/MisConsumosPanel";
 import RepartoDiarioPanel from "../Panel/RepartoDiarioPanel";
 import ResumenPanel from "../Panel/ResumenPanel";
 
-const MisDatos = () => {
+const MisDatos = ({id_community, type_consumer}) => {
   return (
     <div className="mis-datos-container">
       <div className="mis-consumos-container">
         <div className="mis-consumos-panel-main">
-          <MisConsumosPanel />
-          <ResumenPanel/>
+          <MisConsumosPanel id_community={id_community} />
+          <ResumenPanel />
         </div>
         
       </div>
       <div className="rep-diario-container">
-        <RepartoDiarioPanel />
+        <RepartoDiarioPanel id_community={id_community} type_consumer={type_consumer}/>
       </div>
     </div>
   );

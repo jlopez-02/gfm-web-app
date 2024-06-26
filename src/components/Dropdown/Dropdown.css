@@ -12,7 +12,7 @@
 .custom-select-container {
   position: relative;
   font-family: Arial, sans-serif;
-  min-width: 200px;
+  min-width: 220px;
   width: 100%;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .select-selected {
-  background-color: var(--background-color);;
+  background-color: var(--background-color);
   color: var(--active-color);
   padding: 10px;
   font-size: 16px;
@@ -38,7 +38,7 @@
 .select-selected:after {
   position: absolute;
   content: "";
-  top: 14px;
+  top: 16px;
   right: 10px;
   width: 0;
   height: 0;

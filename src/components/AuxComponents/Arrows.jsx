@@ -28,10 +28,8 @@ const Arrows = ({ count, degrees = 180 }) => {
   }
 
   return (
-    <div className="centered-box">
-      <div className="arrow" style={{ transform: `rotate(${degrees}deg)` }}>
-        {spans}
-      </div>
+    <div className="arrow" style={{ transform: `rotate(${degrees}deg)` }}>
+      {spans}
     </div>
   );
 };

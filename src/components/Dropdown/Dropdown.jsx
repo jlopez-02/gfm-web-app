@@ -35,9 +35,6 @@ const Dropdown = ({ selectedId, setSelectedId, data, customContent, label, query
           {item.id}
         </div>
       ))}
-      <div onClick={() => handleOptionClick("Opcion 2")}>Opcion 2</div>
-      <div onClick={() => handleOptionClick("Opcion 3")}>Opcion 3</div>
-      <div onClick={() => handleOptionClick("Opcion 4")}>Opcion 4</div>
     </>
   );
 
@@ -62,7 +59,7 @@ const Dropdown = ({ selectedId, setSelectedId, data, customContent, label, query
             {selectedId || "Selecciona una opción"}
           </div>
           <div className={`select-items ${isOpen ? "" : "select-hide"}`}>
-            {content}
+            {data.length < 1 ? <div>No Data</div> : content}
           </div>
         </div>
       </div>
