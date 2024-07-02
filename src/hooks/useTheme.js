@@ -21,6 +21,11 @@ const useTheme = () => {
   useEffect(() => {
 
     const root = document.documentElement;
+    const body = document.body;
+
+    const fontWeight =  theme === 'dark' ? 'bold' : 'normal'
+
+    body.style.setProperty('font-weight', fontWeight);
 
     const lightTheme = {
       '--background-color': '#ffffff',
@@ -32,7 +37,9 @@ const useTheme = () => {
       '--reverse-color': 'black',
       '--theme-color': 'white',
       '--shadow-1-color': '#ffffff',
-      '--shadow-2-color': '#827b7b'
+      '--shadow-2-color': '#827b7b',
+      '--box-color': '#a3e89b',
+      '--header-data-color': '#2e3136'
     };
 
     const darkTheme = {
@@ -45,10 +52,14 @@ const useTheme = () => {
       '--reverse-color': 'white',
       '--theme-color': 'black',
       '--shadow-1-color': '#0e0e0e',
-      '--shadow-2-color': '#363636'
+      '--shadow-2-color': '#363636',
+      '--box-color': '#e563f9',
+      '--header-data-color': 'white'
     };
 
     const themeStyles = theme === 'light' ? lightTheme : darkTheme;
+
+
 
     
     Object.keys(themeStyles).forEach((key) => {

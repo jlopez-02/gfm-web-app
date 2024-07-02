@@ -1,6 +1,6 @@
 .info-box {
   position: absolute;
-  background-color: #a3e89b;
+  background-color: var(--box-color);
   padding: 5px;
   border-radius: 2px;
   font-size: 1vw;
@@ -88,6 +88,7 @@
     }
 
     .info-power{
+      text-align: center;
       left: 70%;
       top: 25%;
     }
@@ -104,10 +105,10 @@
   display: flex;
   justify-content: center;
   margin: 0;
+  justify-content: center;
 
   .resumen-panel-sub-container {
     width: 70%;
-
     background: var(--background-color);
     box-shadow: -5px -5px 15px var(--shadow-1-color),
       5px 5px 15px var(--shadow-2-color);
@@ -133,7 +134,7 @@
     .summary-item {
       display: flex;
       justify-content: space-between;
-      margin: 10px 0;
+      margin-top: 10px;
       color: var(--reverse-color);
     }
 
@@ -182,7 +183,7 @@
 
     & label {
       position: absolute;
-      background-color: #a3e89b;
+      background-color: var(--box-color);
       padding: 5px;
       border-radius: 2px;
       font-size: 2vw;
@@ -200,26 +201,26 @@
 
   .top-left {
     position: absolute;
-    top: 10%;
-    left: 10%;
+    top: 5%;
+    left: 5%;
   }
 
   .top-right {
     position: absolute;
-    top: 10%;
-    right: 10%;
+    top: 5%;
+    right: 5%;
   }
 
   .bottom-left {
     position: absolute;
     bottom: 10%;
-    left: 10%;
+    left: 5%;
   }
 
   .bottom-right {
     position: absolute;
     bottom: 10%;
-    right: 10%;
+    right: 5%;
   }
 
   .center-center {
@@ -243,4 +244,10 @@
     transform: translate(-50%, -50%);
   }
 
+}
+
+@media (min-width: 601px) and (max-width: 1600px) {
+  .mis-consumos-panel-container {
+    padding-block: 10px;
+  }
 }

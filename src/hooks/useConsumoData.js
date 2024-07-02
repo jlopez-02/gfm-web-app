@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import IP_ADDRESS from '../misc/config';
+import IP_ADDRESS from "../misc/config";
 
-const useConsumoData = ({id_community}) => {
+const useConsumoData = ({ id_community }) => {
   const [data, setData] = useState([]);
   const [selectedId, setSelectedId] = useState();
 
   useEffect(() => {
     const query = `select ID from user_info Where type_ID = 'shelly' and ID_COMMUNITY = '${id_community}'`;
-    const url = `http://${IP_ADDRESS}:8086/query?db=user_info&q=${encodeURIComponent(query)}`;
+    const url = `http://${IP_ADDRESS}:8086/query?db=user_info&q=${encodeURIComponent(
+      query
+    )}`;
 
     fetch(url, {
       method: "GET",
@@ -24,13 +26,16 @@ const useConsumoData = ({id_community}) => {
             })
           );
           setData(formattedData);
+
+          if (formattedData.length > 0) {
+            setSelectedId(formattedData[0].id);
+          }
         }
-        
       })
       .catch((error) => console.error("Error querying InfluxDB:", error));
   }, []);
 
-  return { data, selectedId, setSelectedId};
+  return { data, selectedId, setSelectedId };
 };
 
 export default useConsumoData;

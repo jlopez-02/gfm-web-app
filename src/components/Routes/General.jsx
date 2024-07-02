@@ -3,7 +3,7 @@ import GeneralPanel from "../Panel/GeneralPanel";
 import GrafanaPanel from "../GrafanaPanel/GrafanaPanel";
 import generateGrafanaUrls from "./../../misc/grafana_urls";
 
-const General = ({ theme, delayedLoad, handleLoad, id_community }) => {
+const General = ({ theme, delayedLoad, handleLoad, id_community, openPopup }) => {
   const [panelsLoaded, setPanelsLoaded] = useState({});
   
   useEffect(() => {
@@ -31,12 +31,13 @@ const General = ({ theme, delayedLoad, handleLoad, id_community }) => {
         <div className="b">
           <GrafanaPanel
             title={"AllClientsTable"}
-            src={urls.gen_table_url}
+            src={urls.general_url}
             onLoad={() => handlePanelLoad("AllClientsTable")}
+            hasViewButton={true} openPopup={openPopup}
           />
         </div>
         <div className="c">
-          <GrafanaPanel title={"Mapa"} src={urls.map_map_url} />
+          <GrafanaPanel title={"Mapa"} src={urls.map_map_url} hasViewButton={true} openPopup={openPopup} />
         </div>
       </div>
     </div>

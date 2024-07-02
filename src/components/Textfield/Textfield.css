@@ -22,7 +22,7 @@
   -moz-appearance: textfield;
   appearance: textfield;
   width: 100%;
-  max-width: 60px;
+  max-width: 100px;
   padding: 10px;
   font-size: 16px;
   border: 3px solid var(--background-secondary-color);

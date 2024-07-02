@@ -62,6 +62,9 @@ const useMyData = (id_community, type_consumer, logged_user) => {
   const [potenciaGeneracion, setPotenciaGenecion] = useState(defaultValue);
   const [id_building, setIdBuilding] = useState();
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   
   // Función para obtener y actualizar la producción de energía
 
@@ -77,7 +80,7 @@ const useMyData = (id_community, type_consumer, logged_user) => {
       defaultValue,
       "id_building"
     );
-    setIdBuilding(idVenusData[0].id_building);
+    setIdBuilding(idVenusData[0]?.id_building || null);
     
   };
 
@@ -182,7 +185,6 @@ const useMyData = (id_community, type_consumer, logged_user) => {
 
   // Función para obtener y actualizar todos los datos
   const fetchData = async () => {
-    //await fetchIdVenus();
     await fetchAndSetConsumption();
     await fetchAndSetProduction();
     await fetchAndSetTotalEnergy();
@@ -191,7 +193,25 @@ const useMyData = (id_community, type_consumer, logged_user) => {
   };
 
   useEffect(() => {
+    // Inicialmente obtener el ID de Venus
+    const fetchId = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        await fetchIdVenus();
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchId();
+  }, []);
+
+  useEffect(() => {
     // Inicialmente obtener los datos
+
     fetchData();
 
     // Configurar el intervalo para obtener los datos cada 10 segundos

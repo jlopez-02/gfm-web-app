@@ -12,7 +12,6 @@ const Generacion = ({
   handleLoad,
   loadKey,
   id_community,
-  openPopup
 }) => {
   const { data, selectedId, setSelectedId } = useGeneracionData({
     id_community,
@@ -62,9 +61,6 @@ const Generacion = ({
             title={"AllClientsTable"}
             src={urls.gen_table_url}
             onLoad={() => handlePanelLoad("AllClientsTable")}
-            hasViewButton={true}
-            openPopup={openPopup}
-            position="bottom"
           />
         </div>
       </div>
@@ -88,16 +84,12 @@ const Generacion = ({
                 />
               </div>
             </div>
-            <div>
-              <GrafanaPanel
+
+            <GrafanaPanel
               title={"SelectedClient"}
               src={urls.gen_selected_client}
               onLoad={() => handlePanelLoad("SelectedClient")}
-              hasViewButton={true}
-              openPopup={openPopup}
             />
-            </div>
-            
           </div>
         </div>
 
@@ -107,8 +99,6 @@ const Generacion = ({
               title={"TotalGeneration"}
               src={urls.gen_total_generation}
               onLoad={() => handlePanelLoad("TotalGeneration")}
-              hasViewButton={true}
-              openPopup={openPopup}
             />
           </div>
           <div className="total-generation-c2">

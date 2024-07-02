@@ -32,17 +32,13 @@
     flex-direction: column;
     height: 100%;
 
-    & > .Grafana-panel {
+    & > iframe {
       width: 100%;
       height: 100%;
       border-radius: 5px;
       background: var(--background-color);
       box-shadow: -5px -5px 15px var(--shadow-1-color),
         5px 5px 15px var(--shadow-2-color);
-      & > iframe{
-        width: 100%;
-        height: 100%;
-      }
     }
   }
 
@@ -55,51 +51,37 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      box-sizing: border-box;
+      
       width: 100%;
       height: 100%;
       border-radius: 5px;
       background: var(--background-color);
       box-shadow: -5px -5px 15px var(--shadow-1-color),
         5px 5px 15px var(--shadow-2-color);
-      & > div {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
+      & > iframe {
+        align-self: center;
+        width: 98%;
+        height: 80%;
         border-radius: 5px;
-        padding: 10px;
-        box-sizing: border-box;
-        & > .Grafana-panel {
-          width: 100%;
-          height: 100%;
-          & > iframe{
-            width: 100%;
-            height: 100%;
-          }
-        }
       }
       .selected-client-toolbar {
-        height: max-content;
-        width: 100%;
         display: flex;
         flex-direction: row;
-        padding-inline: 15px;
-        box-sizing: border-box;
+        margin-block: 10px;
+        padding-inline: 20px;
         .timestamp-tool {
-          width: max-content;
           display: flex;
           flex-direction: row;
-          box-sizing: border-box;
+  
           & > * {
             margin-inline: 10px;
           }
         }
-
+  
         justify-content: space-between;
       }
     }
+
   }
 
   .selected-client,
@@ -114,7 +96,11 @@
 
     & > div {
       border-radius: 5px;
-      background: var(--background-color);
+      background: linear-gradient(
+        315deg,
+        var(--shadow-1-color),
+        var(--shadow-2-color)
+      );
       box-shadow: -5px -5px 15px var(--shadow-1-color),
         5px 5px 15px var(--shadow-2-color);
     }
@@ -123,14 +109,9 @@
       flex: 0.7;
       display: flex;
       flex-direction: column;
-      & > .Grafana-panel {
+      & > iframe {
         width: 100%;
         height: 100%;
-
-        & > iframe{
-          width: 100%;
-          height: 100%;
-        }
       }
     }
 
@@ -138,14 +119,9 @@
       flex: 0.3;
       display: flex;
       flex-direction: column;
-      & > .Grafana-panel{
+      & > iframe {
         width: 100%;
         height: 25%;
-
-        & > iframe{
-          width: 100%;
-          height: 100%;
-        }
       }
     }
   }
@@ -156,35 +132,20 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: 100%;
-
+    width: 100%; 
+    
+    
     .c1-generacion-container,
     .c2-generacion-container {
       height: 100%;
     }
-
+  
     .c1-generacion-container {
       width: 100%;
     }
-
+  
     .c2-generacion-container {
       width: 100%;
-    }
-
-    .total-generation {
-      display: flex;
-
-      .total-generation-c1 {
-        flex: 0.6;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .total-generation-c2 {
-        flex: 0.4;
-        display: flex;
-        flex-direction: column;
-      }
     }
   }
 }

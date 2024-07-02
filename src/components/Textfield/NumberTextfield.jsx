@@ -1,30 +1,39 @@
-import React from 'react';
+import React from "react";
 import "./Textfield.css";
 
-const NumberTextfield = ({ label="Label", outLabel = "", min = 0, max=365, value, defaulValue, onChange}) => {
+const NumberTextfield = ({ label = "Label", outLabel = "", min = 0, max = 365, value, onChange }) => {
 
   const handleChange = (e) => {
     let newValue = e.target.value;
-    if (newValue === '' || newValue < min) {
-        newValue = min;
-        onChange(newValue);
-        return;
+
+    // Permitir que el campo esté vacío
+    if (newValue === '') {
+      onChange('');
+      return;
     }
-    if (newValue.match(/^[0-9]*$/)) {
-        newValue = Math.max(min, Math.min(Number(newValue), max));
-        onChange(newValue);
+
+    // Remover ceros iniciales a menos que el valor sea "0." para permitir decimales como "0.1"
+    if (newValue.match(/^0[0-9]+/)) {
+      newValue = newValue.replace(/^0+/, '');
     }
-};
+
+    // Permitir solo números decimales positivos
+    if (newValue.match(/^\d*\.?\d*$/)) {
+      const numericValue = parseFloat(newValue);
+
+      // Asegurar que el valor esté dentro del rango min y max
+      if (!isNaN(numericValue) && numericValue >= min && numericValue <= max) {
+        onChange(newValue);
+      }
+    }
+  };
 
   return (
     <div className="Textfield">
       {label && <label className="custom-label">{label}</label>}
       <input
-        type="number"
+        type="text"
         className="custom-textfield"
-        min={min}
-        max={max}
-        step="1"
         value={value}
         onChange={handleChange}
       />
@@ -34,3 +43,4 @@ const NumberTextfield = ({ label="Label", outLabel = "", min = 0, max=365, value
 };
 
 export default NumberTextfield;
+

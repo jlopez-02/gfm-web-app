@@ -11,10 +11,14 @@ const fetchDataFromDB = async (query, defaultValue, key) => {
       },
     });
     const data = await response.json();
+
     if (data.results[0]?.series) {
-      return data.results[0].series[0].values.map((item) => ({
-        [key]: parseFloat(item[1]).toFixed(2),
-      }));
+      return data.results[0].series[0].values.map((item) => {
+        const value = item[1];
+        return {
+          [key]: value !== null && !isNaN(value) ? parseFloat(value).toFixed(2) : defaultValue,
+        };
+      });
     } else {
       return defaultValue;
     }
@@ -27,7 +31,7 @@ const fetchDataFromDB = async (query, defaultValue, key) => {
 const useGeneralData = (id_community) => {
   const defaultValue = 0;
   const [totalEnergy, setTotalEnergy] = useState(defaultValue);
-  const [energy, setEnergy] = useState(defaultValue);
+  const [consumoTotalComunidad, setConsumoTotalComunidad] = useState(defaultValue);
   
   const fetchAndSetTotalEnergy = async () => {
     const totalEnergyQuery = {
@@ -51,20 +55,20 @@ const useGeneralData = (id_community) => {
     setTotalEnergy(totalEnergyData);
   };
 
-  const fetchEnergy = async () => {
-    const energyQuery = {
+  const fetchConsumoTotalComunidad = async () => {
+    const consumoTotalComunidadQuery = {
       db: "shelly",
       query: `
-        SELECT sum(v1) from (SELECT max(total_act)-min(total_act) as v1 FROM shelly where time >= now()-1d and ID_COMMUNITY='${id_community}' group by ID_DEVICE)
+        select sum(v1) from (select max(total_act) - min(total_act) as v1 from shelly where ID_COMMUNITY = '${id_community}' and time >= now() - 1d group by ID_DEVICE, time(1d)) group by time(1d) order by desc limit 1
       `,
     };
-    const energyData = await fetchDataFromDB(energyQuery, defaultValue, "energy");
-    setEnergy(energyData);
+    const consumoTotalComunidadData = await fetchDataFromDB(consumoTotalComunidadQuery, defaultValue, "cons");
+    setConsumoTotalComunidad(consumoTotalComunidadData);
   };
   
   const fetchData = async () => {
     await fetchAndSetTotalEnergy();
-    await fetchEnergy();
+    await fetchConsumoTotalComunidad();
   };
 
   useEffect(() => {
@@ -73,7 +77,7 @@ const useGeneralData = (id_community) => {
     return () => clearInterval(interval);
   }, []);
 
-  return { totalEnergy, energy };
+  return { totalEnergy, consumoTotalComunidad };
 };
 
 export default useGeneralData;

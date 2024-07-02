@@ -31,13 +31,13 @@ const GeneralPanel = ({id_community}) => {
         <div className="top-right">
           <div className="box orange">
             <img src={Casas} alt="" />
-            <label>{(energy_general).toFixed(2)} kWh</label>
+            <label>{parseFloat(energy_general).toFixed(2)} kWh</label>
           </div>
         </div>
         <div className="bottom-left">
           <div className="box red">
             <img src={Torre} alt="" />
-            <label>{(diferencia).toFixed(2)} kWh</label>
+            <label>{parseFloat(diferencia).toFixed(2)} kWh</label>
           </div>
         </div>
         <div className="bottom-right">

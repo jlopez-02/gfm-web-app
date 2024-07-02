@@ -12,12 +12,20 @@ const Consumo = ({
   handleLoad,
   loadKey,
   id_community,
+  openPopup,
 }) => {
   const { data, selectedId, setSelectedId } = useConsumoData({ id_community });
   const [panelsLoaded, setPanelsLoaded] = useState({});
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const today = new Date();
+  const startOfToday = new Date(today);
+  startOfToday.setHours(0, 0, 0, 0);
+
+  const startOfTodayFormatted = dateToYYYYMMDDTHHMM(startOfToday);
+  const nowFormatted = dateToYYYYMMDDTHHMM(today);
+
+  const [startDate, setStartDate] = useState(startOfTodayFormatted);
+  const [endDate, setEndDate] = useState(nowFormatted);
 
   useEffect(() => {
     if (
@@ -53,6 +61,9 @@ const Consumo = ({
             title={"AllClientsTable"}
             src={urls.cons_table_url}
             onLoad={() => handlePanelLoad("AllClientsTable")}
+            hasViewButton={true}
+            openPopup={openPopup}
+            position="bottom"
           />
         </div>
       </div>
@@ -76,11 +87,15 @@ const Consumo = ({
                 />
               </div>
             </div>
-            <GrafanaPanel
-              title={"SelectedClient"}
-              src={urls.cons_selected_client}
-              onLoad={() => handlePanelLoad("SelectedClient")}
-            />
+            <div>
+              <GrafanaPanel
+                title={"SelectedClient"}
+                src={urls.cons_selected_client}
+                onLoad={() => handlePanelLoad("SelectedClient")}
+                hasViewButton={true}
+                openPopup={openPopup}
+              />
+            </div>
           </div>
         </div>
 
@@ -90,6 +105,8 @@ const Consumo = ({
               title={"TotalGeneration"}
               src={urls.cons_total_generation}
               onLoad={() => handlePanelLoad("TotalGeneration")}
+              hasViewButton={true}
+              openPopup={openPopup}
             />
           </div>
           <div className="total-generation-c2">
@@ -118,6 +135,16 @@ const Consumo = ({
       </div>
     </div>
   );
+};
+
+const dateToYYYYMMDDTHHMM = (date) => {
+  const d = new Date(date);
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const year = d.getFullYear();
+  const hours = String(d.getHours()).padStart(2, "0");
+  const minutes = String(d.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
 export default Consumo;

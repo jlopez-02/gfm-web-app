@@ -38,7 +38,7 @@ const LoginForm = ({
     setUserError("");
     setPasswordError("");
     setMensajeError("");
-  }
+  };
 
   const onButtonClick = () => {
     reloadErrorMessages();
@@ -91,7 +91,7 @@ const LoginForm = ({
             } else {
               setMensajeError("Credenciales incorrectas");
             }
-          }else{
+          } else {
             setMensajeError("El usuario no existe");
           }
         })
@@ -101,6 +101,16 @@ const LoginForm = ({
         });
     }
   };
+
+  const provisionalAdmin = () => {
+    setUsername('GFM');
+    setPassword('admin');
+  }
+
+  const provisionalUser = () => {
+    setUsername('GFM_user');
+    setPassword('password');
+  }
 
   return (
     <div className={"loginMainContainer"}>
@@ -131,7 +141,7 @@ const LoginForm = ({
           <label className="errorLabel">{passwordError}</label>
           <label className="errorLabel">{mensajeError}</label>
         </div>
-        
+
         <br />
         <div className={"inputContainer"}>
           <input
@@ -140,6 +150,21 @@ const LoginForm = ({
             onClick={onButtonClick}
             value={"Iniciar Sesión"}
           />
+          <br></br>
+          <div>
+            <input
+              className={"inputButton"}
+              type="button"
+              onClick={provisionalAdmin}
+              value={"Admin"}
+            />
+            <input
+              className={"inputButton"}
+              type="button"
+              onClick={provisionalUser}
+              value={"User"}
+            />
+          </div>
         </div>
       </div>
     </div>

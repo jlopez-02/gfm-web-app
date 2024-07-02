@@ -11,6 +11,7 @@ const generateGrafanaUrls = (theme, selectedId, startDate, endDate, id_community
   const map_url = `${host_url}/d-solo/GFM_01_MAPA/01-mapa?orgId=1&var-ID_COMMUNITY=${id_community}`;
   const gen_url = `${host_url}/d-solo/GFM_02_GENERACION/02-generacion?orgId=1&var-ID_COMMUNITY=${id_community}`;
   const cons_url = `${host_url}/d-solo/GFM_03_CONSUMO/03-consumo?orgId=1&var-ID_COMMUNITY=${id_community}`;
+  const general_url = `${host_url}/d-solo/GFM_04_TABLAS/04-tablas?orgId=1`;
   
   //http://localhost:3000/d/adlviuoq74e80f/03-consumo?orgId=1&viewPanel=9
   
@@ -39,6 +40,8 @@ const generateGrafanaUrls = (theme, selectedId, startDate, endDate, id_community
     cons_production: `${cons_url}&panelId=13&${properties}}`,
     cons_power: `${cons_url}&panelId=15&${properties}`,
     cons_ratio: `${cons_url}&panelId=16&${properties}`,
+    //URL GENERAL
+    general_url: `${general_url}&panelId=1&${properties}`,
   };
 };
 

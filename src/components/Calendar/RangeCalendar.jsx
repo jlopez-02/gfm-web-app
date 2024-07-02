@@ -3,8 +3,8 @@ import Calendar from "./Calendar";
 import UpdateButton from "../Buttons/UpdateButton";
 
 const RangeCalendar = ({ startDate, setStartDate, endDate, setEndDate }) => {
-  const [tempStartDate, setTempStartDate] = useState(dateToDDMMYYYY(startDate));
-  const [tempEndDate, setTempEndDate] = useState(dateToDDMMYYYY(endDate));
+  const [tempStartDate, setTempStartDate] = useState(startDate);
+  const [tempEndDate, setTempEndDate] = useState(endDate);
 
   const handleUpdate = () => {
     setStartDate(tempStartDate);
@@ -41,14 +41,6 @@ const RangeCalendar = ({ startDate, setStartDate, endDate, setEndDate }) => {
       <UpdateButton onClicked={handleUpdate}>Update</UpdateButton>
     </>
   );
-};
-
-const dateToDDMMYYYY = (date) => {
-  const d = new Date(date);
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0'); // Meses van de 0-11
-  const year = d.getFullYear();
-  return `${day}/${month}/${year}`;
 };
 
 export default RangeCalendar;

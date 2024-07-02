@@ -12,7 +12,7 @@
 .custom-select-container {
   position: relative;
   font-family: Arial, sans-serif;
-  min-width: 220px;
+  min-width: 200px;
   width: 100%;
 }
 
@@ -76,4 +76,3 @@
 .select-hide {
   display: none;
 }
-
