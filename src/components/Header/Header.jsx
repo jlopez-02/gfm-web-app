@@ -47,15 +47,22 @@ const Header = ({
           )}
           {userRole === "user" && (
             <li>
-              <NavLink to="/mis_datos" onClick={reloadComponents}>
-                Mis Datos
+              <NavLink to="/usuario" onClick={reloadComponents}>
+                Usuario
               </NavLink>
             </li>
           )}
           {userRole === "user" && (
             <li>
-              <NavLink to="/general" onClick={reloadComponents}>
-                General
+              <NavLink to="/comunidad" onClick={reloadComponents}>
+                Comunidad
+              </NavLink>
+            </li>
+          )}
+          {userRole === "user" && (
+            <li>
+              <NavLink to="/cargador" onClick={reloadComponents}>
+                Cargador
               </NavLink>
             </li>
           )}
@@ -68,7 +75,7 @@ const Header = ({
             <FontAwesomeIcon icon={faUser} />
             <label>{userName}</label>
           </li>
-          <li className="theme-icon-li">
+          {/* <li className="theme-icon-li">
             <FontAwesomeIcon
               className="theme-icon"
               icon={faCircleHalfStroke}
@@ -77,7 +84,7 @@ const Header = ({
                 reloadComponents();
               }}
             />
-          </li>
+          </li> */}
 
           <li className="logout">
             <a href="/" onClick={handleLogout}>

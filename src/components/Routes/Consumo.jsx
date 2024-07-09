@@ -121,9 +121,9 @@ const Consumo = ({
               onLoad={() => handlePanelLoad("Produccion")}
             />
             <GrafanaPanel
-              title={"Potencia"}
-              src={urls.cons_power}
-              onLoad={() => handlePanelLoad("Potencia")}
+              title={"Cargador"}
+              src={urls.cons_charger}
+              onLoad={() => handlePanelLoad("Cargador")}
             />
             <GrafanaPanel
               title={"Ratio"}

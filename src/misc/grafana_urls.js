@@ -15,7 +15,7 @@ const generateGrafanaUrls = (theme, selectedId, startDate, endDate, id_community
   
   //http://localhost:3000/d/adlviuoq74e80f/03-consumo?orgId=1&viewPanel=9
   
-  const refresh_time = "1s";
+  const refresh_time = "10s";
 
   const gen_update_graphs_properties = `var-ID_BUILDING=${selectedId}&${timestamp}`;
   const cons_update_graphs_properties = `var-ID_DEVICE=${selectedId}&${timestamp}`;
@@ -23,7 +23,7 @@ const generateGrafanaUrls = (theme, selectedId, startDate, endDate, id_community
 
   return {
     //URL MAPA
-    map_map_url: `${map_url}&panelId=12&theme=${theme}&refresh=1m`,
+    map_map_url: `${map_url}&panelId=12&theme=${theme}`,
     //URL GENERACION
     gen_table_url: `${gen_url}&panelId=9&${properties}`,
     gen_selected_client: `${gen_url}&panelId=10&${gen_update_graphs_properties}&${properties}`,
@@ -38,10 +38,13 @@ const generateGrafanaUrls = (theme, selectedId, startDate, endDate, id_community
     cons_total_generation: `${cons_url}&panelId=11&${timestamp}&${properties}`,
     cons_battery: `${cons_url}&panelId=14&${properties}`,
     cons_production: `${cons_url}&panelId=13&${properties}}`,
-    cons_power: `${cons_url}&panelId=15&${properties}`,
-    cons_ratio: `${cons_url}&panelId=16&${properties}`,
+    cons_ratio: `${cons_url}&panelId=17&${properties}`,
+    cons_charger: `${cons_url}&panelId=16&${properties}`,
     //URL GENERAL
     general_url: `${general_url}&panelId=1&${properties}`,
+    //URL CARGADOR
+    table_cargador_url: `${general_url}&panelId=3&${properties}`,
+    aviso_url: `${general_url}&panelId=4&${properties}`,
   };
 };
 

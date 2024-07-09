@@ -26,31 +26,6 @@ const fetchFloatDataFromDB = async (query, defaultValue, key) => {
   }
 };
 
-const fetchStringDataFromDB = async (query, defaultValue, key) => {
-  const url = `http://${IP_ADDRESS}:8086/query?db=${
-    query.db
-  }&q=${encodeURIComponent(query.query)}`;
-  try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: "Basic " + btoa(":"),
-      },
-    });
-    const data = await response.json();
-    if (data.results[0]?.series) {
-      return data.results[0].series[0].values.map((item) => ({
-        [key]:  String(item[1]),
-      }));
-    } else {
-      return defaultValue;
-    }
-  } catch (error) {
-    console.error(`Error fetching ${key}:`, error);
-    return defaultValue;
-  }
-};
-
 
 
 const useMyData = (id_community, type_consumer, logged_user) => {
@@ -60,26 +35,7 @@ const useMyData = (id_community, type_consumer, logged_user) => {
   const [totalEnergy, setTotalEnergy] = useState(defaultValue);
   const [countUsers, setCountUsers] = useState(defaultValue);
   const [potenciaGeneracion, setPotenciaGenecion] = useState(defaultValue);
-  const [id_building, setIdBuilding] = useState();
-
-  
-  // Función para obtener y actualizar la producción de energía
-
-  const fetchIdVenus = async () => {
-    const idVenusQuery = {
-      db: "user_info",
-      query: `
-        select ID from user_info where name_USER = '${logged_user}' and type_ID = 'venus' order by desc limit 1 
-      `,
-    };
-    const idVenusData = await fetchStringDataFromDB(
-      idVenusQuery,
-      defaultValue,
-      "id_building"
-    );
-    setIdBuilding(idVenusData[0].id_building);
-    
-  };
+  const [id_building] = useState();
 
   const fetchAndSetProduction = async () => {
 
@@ -169,7 +125,7 @@ const useMyData = (id_community, type_consumer, logged_user) => {
     const pGenQuery = {
       db: "venus",
       query: `
-        select sum(v1) from (select mean(value) as v1 from venus where subtopic=~ /system\\/0\\/Ac\\/PvOnGrid\\/.*\\/Power/ AND ID_COMMUNITY='${id_community}' group by subtopic, ID_BUILDING, time(1m) fill(linear)) group by time(1m) order by desc limit 1
+        select sum(v1) from (select mean(value) as v1 from venus where subtopic=~ /system\\/0\\/Ac\\/PvOnGrid\\/.*\\/Power/ AND time> now() - 1h and ID_COMMUNITY='${id_community}' group by subtopic, ID_BUILDING, time(1m) fill(previous)) group by time(1m) order by desc limit 1
       `,
     };
     const pGenData = await fetchFloatDataFromDB(

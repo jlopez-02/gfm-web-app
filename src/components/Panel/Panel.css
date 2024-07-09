@@ -8,6 +8,15 @@
 }
 
 
+.amarillo{
+  background-color: yellow !important;
+}
+
+.rojo{
+  background-color: red !important;
+}
+
+
 .mis-consumos-panel-container {
   display: flex;
   justify-content: center;

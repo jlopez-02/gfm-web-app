@@ -32,6 +32,8 @@ const useGeneralData = (id_community) => {
   const defaultValue = 0;
   const [totalEnergy, setTotalEnergy] = useState(defaultValue);
   const [consumoTotalComunidad, setConsumoTotalComunidad] = useState(defaultValue);
+  const [cargador, setCargador] = useState(defaultValue);
+  const [energia_inyectada, setEnergiaInyectada] = useState(defaultValue);
   
   const fetchAndSetTotalEnergy = async () => {
     const totalEnergyQuery = {
@@ -59,16 +61,40 @@ const useGeneralData = (id_community) => {
     const consumoTotalComunidadQuery = {
       db: "shelly",
       query: `
-        select sum(v1) from (select max(total_act) - min(total_act) as v1 from shelly where ID_COMMUNITY = '${id_community}' and time >= now() - 1d group by ID_DEVICE, time(1d)) group by time(1d) order by desc limit 1
+        select sum(v1)/1000 as energia_consumida_instalaciones from (SELECT max(total_act)-min(total_act) as v1 FROM shelly where time >= now()-1d and ID_COMMUNITY='${id_community}' group by ID_DEVICE, time(1d)) group by time(1d) order by desc limit 1
       `,
     };
     const consumoTotalComunidadData = await fetchDataFromDB(consumoTotalComunidadQuery, defaultValue, "cons");
     setConsumoTotalComunidad(consumoTotalComunidadData);
   };
+
+  const fetchCargador = async () => {
+    const cargadorQuery = {
+      db: "ingeteam",
+      query: `
+        select sum(v1) from (SELECT max(energy)-min(energy) as v1 FROM charger where time >= now()-1d and ID_COMMUNITY='${id_community}' GROUP BY ID_POINT, time(1d)) group by time(1d) order by desc limit 1
+      `,
+    };
+    const cargadorData = await fetchDataFromDB(cargadorQuery, defaultValue, "cargador");
+    setCargador(cargadorData);
+  };
+
+  const fetchInyectada = async () => {
+    const injectQuery = {
+      db: "venus",
+      query: `
+        select sum(v1)/1000 as energia_autoconsumida from (select mean(value) as v1 from venus where subtopic=~ /system\\/0\\/Ac\\/Consumption\\/.*\\/Power/ and ID_COMMUNITY='${id_community}' and time>now()-1d group by subtopic, ID_BUILDING, time(1h)) group by time(1d) order by desc limit 1
+      `,
+    };
+    const injectData = await fetchDataFromDB(injectQuery, defaultValue, "energia_inyectada");
+    setEnergiaInyectada(injectData);
+  };
   
   const fetchData = async () => {
     await fetchAndSetTotalEnergy();
     await fetchConsumoTotalComunidad();
+    await fetchCargador();
+    await fetchInyectada();
   };
 
   useEffect(() => {
@@ -77,7 +103,7 @@ const useGeneralData = (id_community) => {
     return () => clearInterval(interval);
   }, []);
 
-  return { totalEnergy, consumoTotalComunidad };
+  return { totalEnergy, consumoTotalComunidad, cargador, energia_inyectada };
 };
 
 export default useGeneralData;

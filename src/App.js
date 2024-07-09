@@ -24,6 +24,7 @@ import LoginForm from "./components/LoginForm/LoginForm.jsx"; // Importa el comp
 import ProtectedRoute from "./components/AuxComponents/ProtectedRoute.jsx"; // Importa el componente de ruta protegida
 import Mediciones from "./components/Routes/Mediciones.jsx";
 import Popup from "./components/PopUp/Popup.jsx";
+import Cargador from "./components/Routes/Cargador.jsx";
 
 function App() {
   const [loadKey, setLoadKey] = useState(1);
@@ -33,9 +34,9 @@ function App() {
   const [loginUsername, setLoginUserName] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [user_id, setUserId] = useState(null);
-  
+
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [popupUrl, setPopupUrl] = useState('');
+  const [popupUrl, setPopupUrl] = useState("");
 
   const openPopup = (url) => {
     setPopupUrl(url);
@@ -44,9 +45,8 @@ function App() {
 
   const closePopup = () => {
     setIsPopupOpen(false);
-    setPopupUrl('');
+    setPopupUrl("");
   };
-
 
   const [community_id, setCommunityId] = useState(null);
   const [type_consumer, setTypeConsumer] = useState(null);
@@ -117,7 +117,7 @@ function App() {
                 path="/mapa"
                 element={
                   <ProtectedRoute isAuth={isAuth}>
-                    <Mapa theme={theme}/>
+                    <Mapa theme={theme} />
                   </ProtectedRoute>
                 }
               />
@@ -172,7 +172,7 @@ function App() {
                 }
               />
               <Route
-                path="/mis_datos"
+                path="/usuario"
                 element={
                   <ProtectedRoute isAuth={isAuth}>
                     <MisDatos
@@ -185,10 +185,27 @@ function App() {
                 }
               />
               <Route
-                path="/general"
+                path="/comunidad"
                 element={
                   <ProtectedRoute isAuth={isAuth}>
-                    <General theme={theme} id_community={community_id} openPopup={openPopup}/>
+                    <General
+                      theme={theme}
+                      id_community={community_id}
+                      openPopup={openPopup}
+                    />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/cargador"
+                element={
+                  <ProtectedRoute isAuth={isAuth}>
+                    <Cargador
+                      theme={theme}
+                      id_community={community_id}
+                      openPopup={openPopup}
+                    />
                   </ProtectedRoute>
                 }
               />
@@ -204,7 +221,7 @@ function App() {
               {userRole === "admin" ? (
                 <Route path="*" element={<Navigate to="/mapa" />} />
               ) : (
-                <Route path="*" element={<Navigate to="/mis_datos" />} />
+                <Route path="*" element={<Navigate to="/usuario" />} />
               )}
               <Route path="*" element={<Navigate to="/mapa" />} />
             </Routes>

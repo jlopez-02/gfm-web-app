@@ -3,6 +3,7 @@ import GFM1 from "../../assets/GFM1.png";
 import "./Panel.css";
 import Arrows from "../AuxComponents/Arrows";
 import { fetchFloatDataFromDB, fetchStringDataFromDB } from "../../misc/fetch";
+import { Tooltip } from "react-tooltip";
 
 const MisConsumosPanel = ({ id_community, logged_user }) => {
   const defaultValue = 0;
@@ -86,7 +87,6 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
 
   useEffect(() => {
     fetchData();
-    
   }, []);
 
   useEffect(() => {
@@ -116,13 +116,33 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
     <div className="mis-consumos-panel-container">
       <div className="mis-consumos-panel-sub-container">
         <img src={GFM1} alt="Interfaz Solar" />
-        <div className="info-box info-house">
+        <div
+          className="info-box info-house"
+          data-tooltip-id="Consumida USUARIO"
+          data-tooltip-content="Consumida USUARIO"
+          data-tooltip-place="left"
+        >
           {parseFloat(consumo).toFixed(2)} kWh
         </div>
-        <div className="info-box info-solar">
+        <Tooltip id="Consumida USUARIO" />
+        <div
+          className="info-box info-solar"
+          data-tooltip-id="Generada USUARIO"
+          data-tooltip-content="Generada USUARIO"
+          data-tooltip-place="bottom"
+        >
           {parseFloat(produccion).toFixed(2)} kWh
         </div>
-        <div className="info-box info-grid">{diferencia} kWh </div>
+        <Tooltip id="Generada USUARIO" />
+        <div
+          className={diferencia <= 0 ? "info-box info-grid amarillo" : "info-box info-grid rojo" }
+          data-tooltip-id="Inyectada USUARIO"
+          data-tooltip-content="Inyectada USUARIO"
+          data-tooltip-place="bottom"
+        >
+          {diferencia} kWh{" "}
+        </div>
+        <Tooltip id="Inyectada USUARIO" />
       </div>
     </div>
   );
