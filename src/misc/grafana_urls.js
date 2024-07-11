@@ -45,6 +45,7 @@ const generateGrafanaUrls = (theme, selectedId, startDate, endDate, id_community
     //URL CARGADOR
     table_cargador_url: `${general_url}&panelId=3&${properties}`,
     aviso_url: `${general_url}&panelId=4&${properties}`,
+    warning: `${general_url}&panelId=6&${properties}`
   };
 };
 

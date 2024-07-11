@@ -24,8 +24,14 @@ const Cargador = ({ theme, delayedLoad, handleLoad, id_community, openPopup }) =
     <div className="general-container">
       <div className="c1-general-container">
         <div className="a">
+        <GrafanaPanel
+            title={"Warning"}
+            src={urls.warning}
+            onLoad={() => handlePanelLoad("Warning")}
+            hasViewButton={true} openPopup={openPopup}
+          />
           {/* <GeneralPanel id_community={id_community}/> */}
-          <div></div>
+          {/* <div></div> */}
         </div>
       </div>
       <div className="c2-general-container">

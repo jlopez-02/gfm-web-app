@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import GFM1 from "../../assets/GFM1.png";
+import GFM3 from "../../assets/GFM3.png";
 import "./Panel.css";
 import Arrows from "../AuxComponents/Arrows";
 import { fetchFloatDataFromDB, fetchStringDataFromDB } from "../../misc/fetch";
@@ -115,7 +115,7 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
   return (
     <div className="mis-consumos-panel-container">
       <div className="mis-consumos-panel-sub-container">
-        <img src={GFM1} alt="Interfaz Solar" />
+        <img src={GFM3} alt="Interfaz Solar" />
         <div
           className="info-box info-house"
           data-tooltip-id="Consumida USUARIO"

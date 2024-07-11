@@ -117,14 +117,19 @@
   justify-content: center;
 
   .resumen-panel-sub-container {
-    width: 70%;
+    width: 100%;
     background: var(--background-color);
     box-shadow: -5px -5px 15px var(--shadow-1-color),
       5px 5px 15px var(--shadow-2-color);
 
     .summary-container {
+      display: flex;
+      flex-direction: column;
       background-color: var(--background-color);
       padding: 20px;
+      padding-inline: 50px;
+      height: 100%;
+      width: 100%;
     }
 
     .title {
@@ -145,6 +150,10 @@
       justify-content: space-between;
       margin-top: 10px;
       color: var(--reverse-color);
+    }
+
+    .summary-item:last-child {
+      margin-top: auto;
     }
 
     .highlight {
