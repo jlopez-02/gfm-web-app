@@ -162,6 +162,10 @@
       margin-top: auto;
     }
 
+    .summary-item:last-child {
+      margin-top: auto;
+    }
+
     .highlight {
       font-weight: bold;
       color: var(--active-color);
