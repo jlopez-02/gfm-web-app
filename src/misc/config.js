@@ -1,5 +1,3 @@
-const IP_ADDRESS = "192.168.15.107";
+const IP_ADDRESS = "localhost";
 
 export default IP_ADDRESS;
-
-

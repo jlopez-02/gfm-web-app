@@ -61,8 +61,8 @@ const Header = ({
           )}
           {userRole === "user" && (
             <li>
-              <NavLink to="/cargador" onClick={reloadComponents}>
-                Cargador
+              <NavLink to="/avisos" onClick={reloadComponents}>
+                Avisos
               </NavLink>
             </li>
           )}

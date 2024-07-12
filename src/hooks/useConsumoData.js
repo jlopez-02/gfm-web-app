@@ -6,7 +6,7 @@ const useConsumoData = ({ id_community }) => {
   const [selectedId, setSelectedId] = useState();
 
   useEffect(() => {
-    const query = `select ID from user_info Where type_ID = 'shelly' and ID_COMMUNITY = '${id_community}'`;
+    const query = `select ID from user_info Where type_ID = 'shelly' or type_ID = 'venus' and ID_COMMUNITY = '${id_community}'`;
     const url = `http://${IP_ADDRESS}:8086/query?db=user_info&q=${encodeURIComponent(
       query
     )}`;

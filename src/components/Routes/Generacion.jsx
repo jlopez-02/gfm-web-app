@@ -74,7 +74,7 @@ const Generacion = ({
           <div className="selected-client-container">
             <div className="selected-client-toolbar">
               <Dropdown
-                label={"Cliente"}
+                label={"Instalación"}
                 selectedId={selectedId}
                 setSelectedId={setSelectedId}
                 data={data}

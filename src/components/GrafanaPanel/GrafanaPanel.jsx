@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import './GrafanaPanel.css';
 
-const GrafanaPanel = ({ src, title, hasViewButton = false, openPopup, position = 'top' }) => {
+const GrafanaPanel = ({ src, title, hasViewButton = false, openPopup, position = 'top', findVenus = false }) => {
   const [loaded, setLoaded] = useState(false);
 
   const handleLoad = () => {
@@ -15,6 +15,7 @@ const GrafanaPanel = ({ src, title, hasViewButton = false, openPopup, position =
   const buttonStyle = {
     [position]: '10px'
   };
+  
 
   return (
     <div className="Grafana-panel">

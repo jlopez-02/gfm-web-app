@@ -163,14 +163,14 @@ function App() {
                 }
               />
 
-              <Route
+              {/* <Route
                 path="/avisos"
                 element={
                   <ProtectedRoute isAuth={isAuth}>
                     <AvisosAdmin />
                   </ProtectedRoute>
                 }
-              />
+              /> */}
               <Route
                 path="/usuario"
                 element={
@@ -198,7 +198,7 @@ function App() {
               />
 
               <Route
-                path="/cargador"
+                path="/avisos"
                 element={
                   <ProtectedRoute isAuth={isAuth}>
                     <Cargador

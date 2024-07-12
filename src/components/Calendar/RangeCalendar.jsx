@@ -29,12 +29,12 @@ const RangeCalendar = ({ startDate, setStartDate, endDate, setEndDate }) => {
   return (
     <>
       <Calendar
-        label="Desde"
+        label="desde"
         value={tempStartDate}
         onChange={handleStartDateChange}
       />
       <Calendar
-        label="Hasta"
+        label="hasta"
         value={tempEndDate}
         onChange={handleEndDateChange}
       />

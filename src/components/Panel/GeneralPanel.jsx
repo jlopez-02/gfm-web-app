@@ -4,6 +4,8 @@ import Placa from "./../../assets/Placa.svg";
 import Coche from "./../../assets/Coche.svg";
 import Casas from "./../../assets/Casas.svg";
 import Torre from "./../../assets/Torre.svg";
+import BateriaCarga from "./../../assets/BateriaCarga.svg";
+import BateriaDesCarga from "./../../assets/BateriaDescarga.svg";
 import useGeneralData from "../../hooks/useGeneralData";
 import { Tooltip } from "react-tooltip";
 
@@ -34,8 +36,8 @@ const GeneralPanel = ({ id_community }) => {
   return (
     <div className="GeneralPanel">
       <div className="container">
-        <div className="top-left">
-          <div className="box yellow">
+        <div className="center-left">
+          <div className="box">
             <img src={Placa} alt="" />
             <label
               data-tooltip-id="Generada COMUNIDAD"
@@ -47,59 +49,48 @@ const GeneralPanel = ({ id_community }) => {
           </div>
           <Tooltip id="Generada COMUNIDAD" />
         </div>
-        <div className="top-right">
-          <div className="box orange">
+        <div className="center-right">
+          <div className="box">
+          <label>0000 kWh</label>
+            <img src={Coche} alt="" width={"40%"}/>
             <img src={Casas} alt="" />
-            <label
-              data-tooltip-id="Consumida COMUNIDAD"
-              data-tooltip-content="Consumida COMUNIDAD"
-              data-tooltip-place="bottom"
-            >
-              {parseFloat(consumo_general).toFixed(2)} kWh
-            </label>
+            <label>0000 kWh</label>
           </div>
           <Tooltip id="Consumida COMUNIDAD" />
         </div>
-        <div className="bottom-left">
-          <div className="box red">
-            <img src={Torre} alt="" />
-            <label
-              data-tooltip-id="Inyectada COMUNIDAD"
-              data-tooltip-content="Inyectada COMUNIDAD"
-              data-tooltip-place="bottom"
-            >
-              {diferencia} kWh
-            </label>
-          </div>
-          <Tooltip id="Inyectada COMUNIDAD" />
-        </div>
-        <div className="bottom-right">
-          <div className="box orange">
-            <img src={Coche} alt="" />
-            <label
-              data-tooltip-id="Punto RECARGA COMUNIDAD"
-              data-tooltip-content="Punto RECARGA COMUNIDAD"
-              data-tooltip-place="bottom"
-            >
-              {parseFloat(var_cargador).toFixed(2)} kWh
-            </label>
-          </div>
-          <Tooltip id="Punto RECARGA COMUNIDAD" />
-        </div>
-
         <div className="center-center">
-          <div className="centered-box">
-            <Arrows count={10} />
-          </div>
+          <Arrows count={10} degrees={90} />
         </div>
         <div className="top-center">
-          <div className="centered-box">
-            <Arrows count={10} degrees={-90} />
+        <div className="box">
+            <div className="box-row">
+              <div>
+                <label>0000 kWh</label>
+                <img src={BateriaDesCarga} alt="" />
+                <Arrows count={4} degrees={180} />
+              </div>
+              <div>
+                <label>0000 kWh</label>
+                <img src={BateriaCarga} alt="" />
+                <Arrows count={4} degrees={0} />
+              </div>
+            </div>
           </div>
         </div>
         <div className="bottom-center">
-          <div className="centered-box">
-            <Arrows count={10} degrees={-90} />
+          <div className="box">
+            <div className="box-row">
+              <div>
+                <Arrows count={4} degrees={180} />
+                <img src={Torre} alt="" />
+                <label>0000 kWh</label>
+              </div>
+              <div>
+                <Arrows count={4} degrees={0} />
+                <img src={Torre} alt="" />
+                <label>0000 kWh</label>
+              </div>
+            </div>
           </div>
         </div>
       </div>

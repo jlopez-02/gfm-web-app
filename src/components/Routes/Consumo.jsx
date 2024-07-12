@@ -73,7 +73,7 @@ const Consumo = ({
           <div className="selected-client-container">
             <div className="selected-client-toolbar">
               <Dropdown
-                label={"Cliente"}
+                label={"Dispositivo"}
                 selectedId={selectedId}
                 setSelectedId={setSelectedId}
                 data={data}
@@ -90,7 +90,7 @@ const Consumo = ({
             <div>
               <GrafanaPanel
                 title={"SelectedClient"}
-                src={urls.cons_selected_client}
+                src={selectedId === '985dad369259' ? urls.cons_selected_client_venus : urls.cons_selected_client}
                 onLoad={() => handlePanelLoad("SelectedClient")}
                 hasViewButton={true}
                 openPopup={openPopup}

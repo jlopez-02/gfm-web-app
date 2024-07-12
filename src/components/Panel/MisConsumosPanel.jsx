@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import GFM1 from "../../assets/GFM1.png";
+import GFM3 from "../../assets/GFM3.png";
 import "./Panel.css";
 import Arrows from "../AuxComponents/Arrows";
 import { fetchFloatDataFromDB, fetchStringDataFromDB } from "../../misc/fetch";
@@ -33,7 +33,7 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
     const idDeviceQuery = {
       db: "user_info",
       query: `
-        select ID from user_info where name_USER = '${logged_user}' and type_ID = 'shelly' order by asc limit 1 
+        select ID from user_info where name_USER = '${logged_user}' and type_ID = 'shelly' order by desc limit 1 
       `,
     };
     const idDeviceData = await fetchStringDataFromDB(
@@ -115,7 +115,7 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
   return (
     <div className="mis-consumos-panel-container">
       <div className="mis-consumos-panel-sub-container">
-        <img src={GFM1} alt="Interfaz Solar" />
+        <img src={GFM3} alt="Interfaz Solar" />
         <div
           className="info-box info-house"
           data-tooltip-id="Consumida USUARIO"
@@ -136,6 +136,16 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
         <Tooltip id="Generada USUARIO" />
         <div
           className={diferencia <= 0 ? "info-box info-grid amarillo" : "info-box info-grid rojo" }
+          data-tooltip-id="Inyectada USUARIO"
+          data-tooltip-content="Inyectada USUARIO"
+          data-tooltip-place="bottom"
+        >
+          {diferencia} kWh{" "}
+        </div>
+        <Tooltip id="Inyectada USUARIO" />
+
+        <div
+          className={diferencia <= 0 ? "info-box info-battery amarillo" : "info-box info-grid rojo" }
           data-tooltip-id="Inyectada USUARIO"
           data-tooltip-content="Inyectada USUARIO"
           data-tooltip-place="bottom"

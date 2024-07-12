@@ -19,7 +19,7 @@ const ResumenPanel = ({ id_community, type_consumer, logged_user }) => {
     const idDeviceQuery = {
       db: "user_info",
       query: `
-        select ID from user_info where name_USER = '${logged_user}' and type_ID = 'shelly' order by asc limit 1 
+        select ID from user_info where name_USER = '${logged_user}' and type_ID = 'shelly' order by desc limit 1
       `,
     };
     const idDeviceData = await fetchStringDataFromDB(
@@ -171,24 +171,36 @@ const ResumenPanel = ({ id_community, type_consumer, logged_user }) => {
             })}
           </div>
           <div className="summary-item highlight">
-            <span>ENERGÍA CONSUMIDA TOTAL</span>
-            <span>{parseFloat(consumo_total).toFixed(2)} kWh</span>
-          </div>
-          <div className="summary-item">
-            <span>ENERGÍA CONSUMIDA DESDE LA RED</span>
+            <span>ENERGÍA GENERADA</span>
             <span>{energia_consumida_red} kWh</span>
           </div>
-          <div className="summary-item">
-            <span>ENERGÍA CONSUMIDA DE LA COMUNIDAD</span>
+          <div className="summary-item highlight">
+            <span>ENERGÍA CONSUMIDA</span>
             <span>
               {parseFloat(energia_consumida_comunidad).toFixed(2)} kWh
             </span>
           </div>
-          <div className="summary-item highlight">
-            <span>RATIO DE AUTOCONSUMO</span>
-            <span>{ratio_autoconsumo}%</span>
+          <div className="summary-item">
+            <span>ENERGÍA AUTOCONSUMIDA</span>
+            <span>{ratio_autoconsumo} kWh</span>
           </div>
-          <div className="summary-item"></div>
+          <div className="summary-item">
+            <span>ENERGÍA INYECTADA</span>
+            <span>{ratio_autoconsumo} kWh</span>
+          </div>
+          <div className="summary-item">
+            <span>ENERGÍA COMPRADA</span>
+            <span>{ratio_autoconsumo} kWh</span>
+          </div>
+          <div className="summary-item">
+            <span>ENERGÍA CARGA BATERÍA</span>
+            <span>{ratio_autoconsumo} %</span>
+          </div>
+
+          <div className="summary-item">
+            <span>ENERGÍA DESCARGA BATERÍA</span>
+            <span>{ratio_autoconsumo} %</span>
+          </div>
           <div className="summary-item">
             <NumberTextField
               label={"Coste diario"}
