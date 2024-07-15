@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import GFM3 from "../../assets/GFM3.png";
 import "./Panel.css";
-import Arrows from "../AuxComponents/Arrows";
 import { fetchFloatDataFromDB, fetchStringDataFromDB } from "../../misc/fetch";
 import { Tooltip } from "react-tooltip";
+import LoadingContainer from "../AuxComponents/LoadingContainer";
 
 const MisConsumosPanel = ({ id_community, logged_user }) => {
   const defaultValue = 0;
@@ -11,6 +11,9 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
   const [id_building, setIdBuilding] = useState(0);
   const [production, setProduction] = useState(defaultValue);
   const [consumption, setConsumption] = useState(defaultValue);
+  const [battery, setBattery] = useState(defaultValue);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   const fetchIdVenus = async () => {
     const idVenusQuery = {
@@ -46,13 +49,58 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
     }
   };
 
+  const fetchAndSetBattery = async () => {
+    if (id_building !== 0) {
+      const batteryQuery = {
+        db: "venus",
+        query: `
+          select last(value)/1000 from venus where subtopic = 'system/0/Dc/Battery/Power' and ID_COMMUNITY='${id_community}'`,
+      };
+      const batteryData = await fetchFloatDataFromDB(
+        batteryQuery,
+        defaultValue,
+        "battery"
+      );
+      setBattery(batteryData);
+    }
+  };
+
+  const fetchAndSetConsumption = async () => {
+    if (id_device !== 0) {
+      const consQuery1 = {
+        db: "shelly",
+        query: `
+        select sum(v1)/1000 from (SELECT mean(total_act_power) as v1 FROM shelly WHERE ID_COMMUNITY='${id_community}' group by ID_DEVICE, time(1m)) group by time(1m) fill(previous) order by desc limit 1
+      `,
+      };
+      const consQuery2 = {
+        db: "venus",
+        query: `
+          select sum(v3)/1000 from (select mean(value) as v3 from venus where subtopic=~ /system\\/0\\/Ac\\/Consumption\\/.*\\/Power/ and ID_COMMUNITY='${id_community}' group by subtopic, ID_BUILDING, time(1m)) group by ID_BUILDING, time(1m) fill(previous) order by desc limit 1`,
+      };
+      const consumptionData1 = await fetchFloatDataFromDB(
+        consQuery1,
+        defaultValue,
+        "consumo1"
+      );
+      const consumptionData2 = await fetchFloatDataFromDB(
+        consQuery2,
+        defaultValue,
+        "consumo2"
+      );
+      setConsumption(
+        parseFloat(consumptionData1[0].consumo1) +
+          parseFloat(consumptionData2[0].consumo2)
+      );
+    }
+  };
+
   const fetchAndSetProduction = async () => {
     if (id_building !== 0) {
       const prodQuery = {
         db: "venus",
         query: `
-          SELECT sum(v1) from (select max(value) - min(value) as v1 from venus where subtopic =~ /.*Ac\\/Energy\\/Forward/ and subtopic =~ /pvinverter.*/ and time > now() - 1d and ID_BUILDING='${id_building}' and ID_COMMUNITY = '${id_community}' group by instanceNumber, time(1d)) group by time(1d) order by desc limit 1
-        `,
+          select mean(value)/1000 as v1 from venus where subtopic=~ /system\\/0\\/Ac\\/PvOnGrid\\/.*\\/Power/ and ID_COMMUNITY='${id_community}' group by subtopic, ID_BUILDING, time(1m) fill(previous) order by desc limit 1`,
       };
       const productionData = await fetchFloatDataFromDB(
         prodQuery,
@@ -63,26 +111,16 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
     }
   };
 
-  const fetchAndSetConsumption = async () => {
-    if (id_device !== 0) {
-      const consQuery = {
-        db: "shelly",
-        query: `
-        SELECT max(total_act)/1000-min(total_act)/1000 FROM shelly where time >= now()-1d and ID_COMMUNITY='${id_community}' and ID_DEVICE='${id_device}' group by time(1d) order by desc limit 1
-      `,
-      };
-      const consumptionData = await fetchFloatDataFromDB(
-        consQuery,
-        defaultValue,
-        "consumo"
-      );
-      setConsumption(consumptionData);
+  const checkIfReady = () => {
+    if (production !== defaultValue && consumption !== defaultValue) {
+      setIsReady(true);
     }
   };
 
   const fetchData = async () => {
     await fetchIdVenus();
     await fetchIdDevice();
+    setIsDataLoaded(true);
   };
 
   useEffect(() => {
@@ -91,26 +129,33 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
 
   useEffect(() => {
     if (id_building !== 0 || id_device !== 0) {
-      fetchAndSetConsumption(id_device);
       fetchAndSetProduction(id_building);
+      fetchAndSetConsumption(id_device);
+      fetchAndSetBattery(id_building);
 
       const interval = setInterval(() => {
-        fetchAndSetConsumption(id_device);
         fetchAndSetProduction(id_building);
+        fetchAndSetConsumption(id_device);
+        fetchAndSetBattery(id_building);
       }, 10000);
 
       // Cleanup interval on component unmount
       return () => clearInterval(interval);
     }
-  }, [id_building, id_device]);
+  }, [id_building, id_device, isDataLoaded]);
 
-  if (consumption === null || production === null || id_building === null) {
-    return <div>Loading...</div>;
+  useEffect(() => {
+    checkIfReady();
+  }, [production, consumption]);
+
+  if (!isReady ||consumption === null || production === null || id_building === null || battery === null) {
+    return <LoadingContainer/>
   }
 
-  const consumo = consumption ? consumption[0].consumo : 0;
+  const consumo = consumption ? consumption : 0;
   const produccion = production ? production[0].produccion : 0;
-  const diferencia = (parseFloat(consumo) - parseFloat(produccion)).toFixed(2);
+  const diferencia = (parseFloat(produccion) - parseFloat(consumo)).toFixed(2);
+  const bateria = battery ? battery[0].battery : 0;
 
   return (
     <div className="mis-consumos-panel-container">
@@ -122,7 +167,7 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
           data-tooltip-content="Consumida USUARIO"
           data-tooltip-place="left"
         >
-          {parseFloat(consumo).toFixed(2)} kWh
+          {parseFloat(consumo).toFixed(2)} kW
         </div>
         <Tooltip id="Consumida USUARIO" />
         <div
@@ -131,28 +176,36 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
           data-tooltip-content="Generada USUARIO"
           data-tooltip-place="bottom"
         >
-          {parseFloat(produccion).toFixed(2)} kWh
+          {parseFloat(produccion).toFixed(2)} kW
         </div>
         <Tooltip id="Generada USUARIO" />
         <div
-          className={diferencia <= 0 ? "info-box info-grid amarillo" : "info-box info-grid rojo" }
+          className={
+            diferencia <= 0
+              ? "info-box info-grid amarillo"
+              : "info-box info-grid rojo"
+          }
           data-tooltip-id="Inyectada USUARIO"
           data-tooltip-content="Inyectada USUARIO"
           data-tooltip-place="bottom"
         >
-          {diferencia} kWh{" "}
+          {diferencia} kW{" "}
         </div>
         <Tooltip id="Inyectada USUARIO" />
 
         <div
-          className={diferencia <= 0 ? "info-box info-battery amarillo" : "info-box info-grid rojo" }
-          data-tooltip-id="Inyectada USUARIO"
-          data-tooltip-content="Inyectada USUARIO"
+          className={
+            bateria <= 0
+              ? "info-box info-battery amarillo"
+              : "info-box info-battery rojo"
+          }
+          data-tooltip-id="Bateria USUARIO"
+          data-tooltip-content="Bateria USUARIO"
           data-tooltip-place="bottom"
         >
-          {diferencia} kWh{" "}
+          {bateria} kW{" "}
         </div>
-        <Tooltip id="Inyectada USUARIO" />
+        <Tooltip id="Bateria USUARIO" />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ const UpdateButton = ({ onClicked }) => {
   return (
     <div className="UpdateButton">
       <button className="custom-button" onClick={ onClicked }>
-        <FontAwesomeIcon icon={faFilter} />
+        Filtrar
       </button>
     </div>
   );

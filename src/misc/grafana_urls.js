@@ -36,6 +36,7 @@ const generateGrafanaUrls = (theme, selectedId, startDate, endDate, id_community
     cons_table_url: `${cons_url}&panelId=9&${properties}`,
     cons_selected_client: `${cons_url}&panelId=10&${cons_update_graphs_properties}&${properties}`,
     cons_selected_client_venus: `${cons_url}&panelId=18&${cons_update_graphs_properties}&${properties}`,
+    cons_selected_client_ingeteam: `${cons_url}&panelId=19&${cons_update_graphs_properties}&${properties}`,
     cons_total_generation: `${cons_url}&panelId=11&${timestamp}&${properties}`,
     cons_battery: `${cons_url}&panelId=14&${properties}`,
     cons_production: `${cons_url}&panelId=13&${properties}}`,

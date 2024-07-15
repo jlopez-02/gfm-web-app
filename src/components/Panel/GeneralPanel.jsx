@@ -8,30 +8,26 @@ import BateriaCarga from "./../../assets/BateriaCarga.svg";
 import BateriaDesCarga from "./../../assets/BateriaDescarga.svg";
 import useGeneralData from "../../hooks/useGeneralData";
 import { Tooltip } from "react-tooltip";
+import LoadingContainer from "../AuxComponents/LoadingContainer";
 
 const GeneralPanel = ({ id_community }) => {
-  const { totalEnergy, consumoTotalComunidad, cargador, energia_inyectada } =
-    useGeneralData(id_community);
+  const { isReady, totalEnergy, consumoTotalComunidad, cargador, energia_inyectada, bateriaCarga } = useGeneralData(id_community);
 
   if (
+    !isReady ||
     totalEnergy === null ||
     consumoTotalComunidad === null ||
     cargador === null ||
-    energia_inyectada === null
+    bateriaCarga === null
   ) {
-    return <div>Loading...</div>;
+    return <LoadingContainer/>;
   }
 
   const total_energy = totalEnergy ? totalEnergy[0].total_energy : 0;
-  const consumo_general = consumoTotalComunidad
-    ? consumoTotalComunidad[0].cons
-    : 0;
-  const var_cargador = cargador ? cargador[0].cargador : 0;
-  const energia_inyect = energia_inyectada
-    ? energia_inyectada[0].energia_inyectada
-    : 0;
-
-  const diferencia = parseFloat(total_energy - energia_inyect).toFixed(2);
+  const consumo_comunidad = consumoTotalComunidad ? consumoTotalComunidad : 0;
+  const energia_cargador = cargador ? cargador[0].cargador : 0;
+  const bateria_carga = bateriaCarga ? bateriaCarga[0].carga : 0;
+  const diferencia = (parseFloat(total_energy) - parseFloat(consumo_comunidad)).toFixed(2);
 
   return (
     <div className="GeneralPanel">
@@ -51,29 +47,25 @@ const GeneralPanel = ({ id_community }) => {
         </div>
         <div className="center-right">
           <div className="box">
-          <label>0000 kWh</label>
-            <img src={Coche} alt="" width={"40%"}/>
+            <label>{parseFloat(energia_cargador).toFixed(2)} kWh</label>
+            <img src={Coche} alt="" width={"40%"} />
             <img src={Casas} alt="" />
-            <label>0000 kWh</label>
+            <label>{parseFloat(consumo_comunidad).toFixed(2)} kWh</label>
           </div>
           <Tooltip id="Consumida COMUNIDAD" />
         </div>
         <div className="center-center">
-          <Arrows count={10} degrees={90} />
+          <Arrows count={10} degrees={-90} />
         </div>
         <div className="top-center">
-        <div className="box">
+          <div className="box">
             <div className="box-row">
               <div>
-                <label>0000 kWh</label>
-                <img src={BateriaDesCarga} alt="" />
-                <Arrows count={4} degrees={180} />
+                <label>{parseFloat(bateria_carga).toFixed(2)} kW</label>
+                <img src={bateria_carga <= 0 ? BateriaCarga : BateriaDesCarga } alt="" />
+                <Arrows count={4} degrees={bateria_carga <= 0 ? 0 : 180}/>
               </div>
-              <div>
-                <label>0000 kWh</label>
-                <img src={BateriaCarga} alt="" />
-                <Arrows count={4} degrees={0} />
-              </div>
+              
             </div>
           </div>
         </div>
@@ -83,12 +75,7 @@ const GeneralPanel = ({ id_community }) => {
               <div>
                 <Arrows count={4} degrees={180} />
                 <img src={Torre} alt="" />
-                <label>0000 kWh</label>
-              </div>
-              <div>
-                <Arrows count={4} degrees={0} />
-                <img src={Torre} alt="" />
-                <label>0000 kWh</label>
+                <label>{diferencia} kWh</label>
               </div>
             </div>
           </div>

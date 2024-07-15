@@ -90,7 +90,7 @@ const Consumo = ({
             <div>
               <GrafanaPanel
                 title={"SelectedClient"}
-                src={selectedId === '985dad369259' ? urls.cons_selected_client_venus : urls.cons_selected_client}
+                src={selectedId === '985dad369259' ? urls.cons_selected_client_venus : selectedId === '1' ? urls.cons_selected_client_ingeteam : urls.cons_selected_client}
                 onLoad={() => handlePanelLoad("SelectedClient")}
                 hasViewButton={true}
                 openPopup={openPopup}

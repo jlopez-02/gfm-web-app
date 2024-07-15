@@ -85,7 +85,7 @@
     position: relative;
     width: 80%;
     max-width: 800px;
-
+    height: 100%;
     .info-house {
       left: 8%;
       top: 100%;
@@ -119,10 +119,25 @@
   display: flex;
   justify-content: center;
   margin: 0;
-  justify-content: center;
+  .resumen-calendar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;  
+    
+    margin-block: 20px;
+    padding: 10px;
+    background: var(--background-color);
+    box-shadow: -1px -1px 3px var(--shadow-1-color),
+      0px 0px 3px var(--shadow-2-color);
+    .Calendar{
+      margin-right: 20px;
+    }
+  }
 
   .resumen-panel-sub-container {
     width: 100%;
+    height: 100%;
     background: var(--background-color);
     box-shadow: -5px -5px 15px var(--shadow-1-color),
       5px 5px 15px var(--shadow-2-color);
@@ -155,11 +170,7 @@
       justify-content: space-between;
       margin-top: 10px;
       color: var(--reverse-color);
-      margin-bottom: auto;
-    }
-
-    .summary-item:last-child {
-      margin-top: auto;
+      margin-bottom: 20px;
     }
 
     .summary-item:last-child {
@@ -172,9 +183,9 @@
     }
 
     .total-saved {
+      align-self: center;
       text-align: right;
       font-weight: bold;
-      margin-top: 10px;
       color: var(--active-color);
     }
   }
@@ -288,6 +299,38 @@
 }
 
 @media (min-width: 601px) and (max-width: 1600px) {
+
+  .resumen-panel-container {
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+    background: var(--background-color);
+    box-shadow: -5px -5px 15px var(--shadow-1-color),
+        5px 5px 15px var(--shadow-2-color);
+
+    .resumen-panel-sub-container{
+      height: max-content;
+    }
+    .resumen-calendar{
+      
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .Calendar{
+        padding: 10px;
+        width: 100%;
+        label{
+          min-width: 50px;
+        }
+      }
+
+      & button{
+        width: 200px;
+      }
+      
+    }
+  }
+
   .mis-consumos-panel-container {
     padding-block: 10px;
   }
@@ -334,4 +377,6 @@
     }
   
   }
+
+  
 }

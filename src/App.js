@@ -180,6 +180,7 @@ function App() {
                       id_community={community_id}
                       type_consumer={type_consumer}
                       logged_user={loginUsername}
+                      openPopup={openPopup}
                     />
                   </ProtectedRoute>
                 }

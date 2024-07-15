@@ -8,3 +8,24 @@
 .header {
   flex: 0 0 auto;
 }
+
+.loading-div{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+.spinner-icon {
+  font-size: 10rem;
+  color: var(--active-color);
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
