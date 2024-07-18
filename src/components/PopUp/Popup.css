@@ -20,7 +20,7 @@
     width: 90%;
     height: 90%;
     background: var(--background-color);
-    border-radius: 5px;
+
     overflow: hidden;
   }
   

@@ -16,7 +16,7 @@
 }
 
 .spinner-icon {
-  font-size: 10rem;
+  font-size: 7rem;
   color: var(--active-color);
   animation: spin 1s infinite linear;
 }

@@ -45,21 +45,21 @@ const Header = ({
               </NavLink>
             </li>
           )}
-          {userRole === "user" && (
+          {(userRole === "user" || userRole === "admin") && (
             <li>
               <NavLink to="/usuario" onClick={reloadComponents}>
                 Usuario
               </NavLink>
             </li>
           )}
-          {userRole === "user" && (
+          {(userRole === "user" || userRole === "admin") && (
             <li>
               <NavLink to="/comunidad" onClick={reloadComponents}>
                 Comunidad
               </NavLink>
             </li>
           )}
-          {userRole === "user" && (
+          {(userRole === "user" || userRole === "admin") && (
             <li>
               <NavLink to="/avisos" onClick={reloadComponents}>
                 Avisos

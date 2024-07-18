@@ -50,11 +50,12 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
   };
 
   const fetchAndSetBattery = async () => {
-    if (id_building !== 0) {
+    if (id_community !== 0) {
       const batteryQuery = {
         db: "venus",
         query: `
-          select last(value)/1000 from venus where subtopic = 'system/0/Dc/Battery/Power' and ID_COMMUNITY='${id_community}'`,
+          select sum(v3)/1000 from (select mean(value) as v3 from venus where subtopic=~ /system\\/0\\/Dc\\/Battery\\/Power/ and ID_COMMUNITY='${id_community}' group by subtopic, ID_BUILDING, time(1m)) group by ID_BUILDING, time(1m) fill(previous) order by desc limit 1
+ `,
       };
       const batteryData = await fetchFloatDataFromDB(
         batteryQuery,
@@ -66,17 +67,19 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
   };
 
   const fetchAndSetConsumption = async () => {
-    if (id_device !== 0) {
+    if (id_community !== 0) {
       const consQuery1 = {
         db: "shelly",
         query: `
-        select sum(v1)/1000 from (SELECT mean(total_act_power) as v1 FROM shelly WHERE ID_COMMUNITY='${id_community}' group by ID_DEVICE, time(1m)) group by time(1m) fill(previous) order by desc limit 1
+        select sum(v1)/1000 from (SELECT mean(total_act_power) as v1 FROM shelly WHERE ID_COMMUNITY='${id_community}' group by ID_DEVICE, time(1m)) group by time(1m) fill(0) order by desc limit 1
       `,
       };
       const consQuery2 = {
         db: "venus",
         query: `
-          select sum(v3)/1000 from (select mean(value) as v3 from venus where subtopic=~ /system\\/0\\/Ac\\/Consumption\\/.*\\/Power/ and ID_COMMUNITY='${id_community}' group by subtopic, ID_BUILDING, time(1m)) group by ID_BUILDING, time(1m) fill(previous) order by desc limit 1`,
+          select sum(v3)/1000 from (select mean(value) as v3 from venus where subtopic=~ /system\\/0\\/Ac\\/Consumption\\/.*\\/Power/ and ID_COMMUNITY='${id_community}' group by subtopic, ID_BUILDING, time(1m)) group by ID_BUILDING, time(1m) fill(0) order by desc limit 1
+
+        `,
       };
       const consumptionData1 = await fetchFloatDataFromDB(
         consQuery1,
@@ -96,11 +99,12 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
   };
 
   const fetchAndSetProduction = async () => {
-    if (id_building !== 0) {
+    if (id_community !== 0) {
       const prodQuery = {
         db: "venus",
         query: `
-          select mean(value)/1000 as v1 from venus where subtopic=~ /system\\/0\\/Ac\\/PvOnGrid\\/.*\\/Power/ and ID_COMMUNITY='${id_community}' group by subtopic, ID_BUILDING, time(1m) fill(previous) order by desc limit 1`,
+        select sum(v1)/1000 from (select last(value) as v1 from venus where subtopic=~ /pvinverter\\/.*\\/Ac\\/Power/ and ID_COMMUNITY ='${id_community}' group by subtopic) group by ID_BUILDING order by desc limit 1
+          `,
       };
       const productionData = await fetchFloatDataFromDB(
         prodQuery,
@@ -118,8 +122,8 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
   };
 
   const fetchData = async () => {
-    await fetchIdVenus();
-    await fetchIdDevice();
+    //await fetchIdVenus();
+    //await fetchIdDevice();
     setIsDataLoaded(true);
   };
 
@@ -128,34 +132,40 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
   }, []);
 
   useEffect(() => {
-    if (id_building !== 0 || id_device !== 0) {
-      fetchAndSetProduction(id_building);
-      fetchAndSetConsumption(id_device);
-      fetchAndSetBattery(id_building);
+    if (id_community !== 0) {
+      fetchAndSetProduction(id_community);
+      fetchAndSetConsumption(id_community);
+      fetchAndSetBattery(id_community);
 
       const interval = setInterval(() => {
-        fetchAndSetProduction(id_building);
-        fetchAndSetConsumption(id_device);
-        fetchAndSetBattery(id_building);
+        fetchAndSetProduction(id_community);
+        fetchAndSetConsumption(id_community);
+        fetchAndSetBattery(id_community);
       }, 10000);
 
       // Cleanup interval on component unmount
       return () => clearInterval(interval);
     }
-  }, [id_building, id_device, isDataLoaded]);
+  }, [id_building]);
 
   useEffect(() => {
     checkIfReady();
   }, [production, consumption]);
 
-  if (!isReady ||consumption === null || production === null || id_building === null || battery === null) {
-    return <LoadingContainer/>
+  if (
+    !isReady ||
+    consumption === null ||
+    production === null ||
+    id_building === null ||
+    battery === null
+  ) {
+    return <LoadingContainer />;
   }
 
   const consumo = consumption ? consumption : 0;
   const produccion = production ? production[0].produccion : 0;
-  const diferencia = (parseFloat(produccion) - parseFloat(consumo)).toFixed(2);
   const bateria = battery ? battery[0].battery : 0;
+  const diferencia = (-parseFloat(produccion) + parseFloat(consumo) + parseFloat(bateria)).toFixed(2);
 
   return (
     <div className="mis-consumos-panel-container">
@@ -167,7 +177,7 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
           data-tooltip-content="Consumida USUARIO"
           data-tooltip-place="left"
         >
-          {parseFloat(consumo).toFixed(2)} kW
+          {isNaN(consumo) ? "Cargando..." : `${parseFloat(consumo).toFixed(2)} kW`}
         </div>
         <Tooltip id="Consumida USUARIO" />
         <div
@@ -176,7 +186,7 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
           data-tooltip-content="Generada USUARIO"
           data-tooltip-place="bottom"
         >
-          {parseFloat(produccion).toFixed(2)} kW
+          {isNaN(produccion) ? "Cargando..." : `${parseFloat(produccion).toFixed(2)} kW`}
         </div>
         <Tooltip id="Generada USUARIO" />
         <div
@@ -189,21 +199,17 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
           data-tooltip-content="Inyectada USUARIO"
           data-tooltip-place="bottom"
         >
-          {diferencia} kW{" "}
+          {isNaN(diferencia) ? "Cargando..." : `${parseFloat(diferencia).toFixed(2)} kW`}
         </div>
         <Tooltip id="Inyectada USUARIO" />
 
         <div
-          className={
-            bateria <= 0
-              ? "info-box info-battery amarillo"
-              : "info-box info-battery rojo"
-          }
+          className="info-box info-battery"
           data-tooltip-id="Bateria USUARIO"
           data-tooltip-content="Bateria USUARIO"
           data-tooltip-place="bottom"
         >
-          {bateria} kW{" "}
+          {isNaN(bateria) ? "Cargando..." : `${parseFloat(bateria).toFixed(2)} kW`}
         </div>
         <Tooltip id="Bateria USUARIO" />
       </div>

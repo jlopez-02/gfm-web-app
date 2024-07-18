@@ -11,7 +11,7 @@ import { Tooltip } from "react-tooltip";
 import LoadingContainer from "../AuxComponents/LoadingContainer";
 
 const GeneralPanel = ({ id_community }) => {
-  const { isReady, totalEnergy, consumoTotalComunidad, cargador, energia_inyectada, bateriaCarga } = useGeneralData(id_community);
+  const { isReady, totalEnergy, consumoTotalComunidad, cargador, bateriaCarga } = useGeneralData(id_community);
 
   if (
     !isReady ||
@@ -27,7 +27,7 @@ const GeneralPanel = ({ id_community }) => {
   const consumo_comunidad = consumoTotalComunidad ? consumoTotalComunidad : 0;
   const energia_cargador = cargador ? cargador[0].cargador : 0;
   const bateria_carga = bateriaCarga ? bateriaCarga[0].carga : 0;
-  const diferencia = (parseFloat(total_energy) - parseFloat(consumo_comunidad)).toFixed(2);
+  const diferencia = (-parseFloat(total_energy) + parseFloat(consumo_comunidad) + parseFloat(bateria_carga)).toFixed(2);
 
   return (
     <div className="GeneralPanel">
@@ -40,17 +40,17 @@ const GeneralPanel = ({ id_community }) => {
               data-tooltip-content="Generada COMUNIDAD"
               data-tooltip-place="bottom"
             >
-              {parseFloat(total_energy).toFixed(2)} kWh
+              {isNaN(total_energy) ? "Cargando..." : `${parseFloat(total_energy).toFixed(2)} kW`}
             </label>
           </div>
           <Tooltip id="Generada COMUNIDAD" />
         </div>
         <div className="center-right">
           <div className="box">
-            <label>{parseFloat(energia_cargador).toFixed(2)} kWh</label>
+            <label>{isNaN(energia_cargador) ? "Cargando..." : `${parseFloat(energia_cargador).toFixed(2)} kW`}</label>
             <img src={Coche} alt="" width={"40%"} />
             <img src={Casas} alt="" />
-            <label>{parseFloat(consumo_comunidad).toFixed(2)} kWh</label>
+            <label>{isNaN(consumo_comunidad) ? "Cargando..." : `${parseFloat(consumo_comunidad).toFixed(2)} kW`}</label>
           </div>
           <Tooltip id="Consumida COMUNIDAD" />
         </div>
@@ -61,7 +61,7 @@ const GeneralPanel = ({ id_community }) => {
           <div className="box">
             <div className="box-row">
               <div>
-                <label>{parseFloat(bateria_carga).toFixed(2)} kW</label>
+                <label>{isNaN(bateria_carga) ? "Cargando..." : `${parseFloat(bateria_carga).toFixed(2)} kW`}</label>
                 <img src={bateria_carga <= 0 ? BateriaCarga : BateriaDesCarga } alt="" />
                 <Arrows count={4} degrees={bateria_carga <= 0 ? 0 : 180}/>
               </div>
@@ -73,9 +73,9 @@ const GeneralPanel = ({ id_community }) => {
           <div className="box">
             <div className="box-row">
               <div>
-                <Arrows count={4} degrees={180} />
+                <Arrows count={4} degrees={diferencia <= 0 ? 0 : 180}/>
                 <img src={Torre} alt="" />
-                <label>{diferencia} kWh</label>
+                <label>{isNaN(diferencia) ? "Cargando..." : `${parseFloat(diferencia).toFixed(2)} kW`}</label>
               </div>
             </div>
           </div>
