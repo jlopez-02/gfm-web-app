@@ -16,10 +16,10 @@ const useGeneralData = (id_community, startDate, endDate) => {
 
   const checkIfReady = () => {
     if (
-      energiaGenerada !== defaultValue &&
-      energiaConsumida !== defaultValue &&
-      bateriaDescarga !== defaultValue && 
-      bateriaCarga !== defaultValue
+      !isNaN(energiaGenerada) &&
+      !isNaN(energiaConsumida) &&
+      !isNaN(bateriaCarga) &&
+      !isNaN(bateriaDescarga)
     ) {
       setIsReady(true);
     }

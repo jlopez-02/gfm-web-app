@@ -14,8 +14,10 @@ const useGeneralData = (id_community) => {
 
   const checkIfReady = () => {
     if (
-      totalEnergy !== defaultValue &&
-      consumoTotalComunidad !== defaultValue
+      !isNaN(totalEnergy) &&
+      !isNaN(consumoTotalComunidad) &&
+      !isNaN(cargador) &&
+      !isNaN(bateriaCarga)
     ) {
       setIsReady(true);
     }

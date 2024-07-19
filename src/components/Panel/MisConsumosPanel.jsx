@@ -116,7 +116,7 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
   };
 
   const checkIfReady = () => {
-    if (production !== defaultValue && consumption !== defaultValue) {
+    if (!isNaN(production) && !isNaN(consumption) && !isNaN(battery)) {
       setIsReady(true);
     }
   };

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Panel.css";
 import NumberTextField from "../Textfield/NumberTextfield";
-import { fetchFloatDataFromDB, fetchStringDataFromDB } from "../../misc/fetch";
 import RangeCalendar from "./../Calendar/RangeCalendar";
 import useResumenData from "../../hooks/useResumenData";
 import LoadingContainer from "../AuxComponents/LoadingContainer";
@@ -38,6 +37,7 @@ const ResumenPanel = ({ id_community, type_consumer, logged_user }) => {
   const bateria_carga = bateriaCarga ? bateriaCarga[0].carga : 0;
   const bateria_descarga = bateriaDescarga ? bateriaDescarga[0].descarga : 0; 
 
+  console.log(energia_generada);
   
 
   return (
