@@ -50,9 +50,8 @@ const useGeneralData = (id_community, startDate, endDate) => {
     const query2 = {
       db: "venus",
       query: `
-        select sum(v1)/1000 from (select mean(value) 
-        as v1 from venus where subtopic=~ /system\\/0\\/Ac\\/Consumption\\/.*\\/Power/ 
-        and ID_COMMUNITY='${id_community}' and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1h)) 
+        select sum(v1)/1000 from (select mean(value) as v1 from venus where subtopic=~ /system\\/0\\/Ac\\/Consumption\\/.*\\/Power/ 
+        and ID_COMMUNITY='${id_community}' and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1h), subtopic)
       `,
     };
     const query3 = {
@@ -69,6 +68,7 @@ const useGeneralData = (id_community, startDate, endDate) => {
         select sum(energy) as v1_ingeteam from charger where state=9 and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1d) fill(0)  
       `,
     };
+
     const data1 = await fetchFloatDataFromDB(query1, defaultValue, "consumida");
     const data2 = await fetchFloatDataFromDB(query2, defaultValue, "consumida");
     const data3 = await fetchFloatDataFromDB(query3, defaultValue, "consumida");
@@ -79,6 +79,7 @@ const useGeneralData = (id_community, startDate, endDate) => {
     let d3 = data3[0] ?  parseFloat(data3[0].consumida) : 0;
     let d4 = data4[0] ?  parseFloat(data4[0].consumida) : 0;
 
+    //console.log(d1 + " | " + d2 + " | " + d3 +  " | " + d4);
     setEnergiaConsumida(d1 + d2 + d3 + d4);
   };
 
@@ -86,10 +87,13 @@ const useGeneralData = (id_community, startDate, endDate) => {
     const cargaQuery = {
       db: "venus",
       query: `
-        select sum(v1) from (select sum(v1)/1000 as v1 from (select mean(value) as v1 from venus where value<0 and subtopic='system/0/Dc/Battery/Power' and ID_COMMUNITY='${id_community}' and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1h)) group by time(1d))   
+        select sum(v1)*1/60/1000 from (select mean(value) as v1 from venus where value>0 and 
+        subtopic='system/0/Dc/Battery/Power' and ID_COMMUNITY='${id_community}' 
+        and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1m) fill(0))  
       `,
     };
     const cargaData = await fetchFloatDataFromDB(cargaQuery, defaultValue, "carga");
+    
     setBateriaCarga(cargaData);
   };
 
@@ -97,7 +101,9 @@ const useGeneralData = (id_community, startDate, endDate) => {
     const descargaQuery = {
       db: "venus",
       query: `
-        select sum(v1) from (select sum(v1)/1000 as v1 from (select mean(value) as v1 from venus where value>0 and subtopic='system/0/Dc/Battery/Power' and ID_COMMUNITY='${id_community}' and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1h)) group by time(1d))   
+        select sum(v1)*1/60/1000 from (select mean(value) as v1 from venus where value<0 and 
+        subtopic='system/0/Dc/Battery/Power' and ID_COMMUNITY='${id_community}' 
+        and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1m) fill(0))
       `,
     };
     const descargaData = await fetchFloatDataFromDB(descargaQuery, defaultValue, "descarga");

@@ -165,7 +165,11 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
   const consumo = consumption ? consumption : 0;
   const produccion = production ? production[0].produccion : 0;
   const bateria = battery ? battery[0].battery : 0;
-  const diferencia = (-parseFloat(produccion) + parseFloat(consumo) + parseFloat(bateria)).toFixed(2);
+  const diferencia = (
+    -parseFloat(produccion) +
+    parseFloat(consumo) +
+    parseFloat(bateria)
+  ).toFixed(2);
 
   return (
     <div className="mis-consumos-panel-container">
@@ -177,7 +181,9 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
           data-tooltip-content="Consumida USUARIO"
           data-tooltip-place="left"
         >
-          {isNaN(consumo) ? "Cargando..." : `${parseFloat(consumo).toFixed(2)} kW`}
+          {isNaN(consumo)
+            ? "Cargando..."
+            : `${parseFloat(consumo).toFixed(2)} kW`}
         </div>
         <Tooltip id="Consumida USUARIO" />
         <div
@@ -186,9 +192,17 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
           data-tooltip-content="Generada USUARIO"
           data-tooltip-place="bottom"
         >
-          {isNaN(produccion) ? "Cargando..." : `${parseFloat(produccion).toFixed(2)} kW`}
+          {isNaN(produccion)
+            ? "Cargando..."
+            : `${parseFloat(produccion).toFixed(2)} kW`}
+        </div>
+        <div className="info-box-secondary info-solar-f1">
+          <label>Instalada: <b>63.5 kW</b></label>
+          <label>Pico: <b>60.8 kWp</b></label>
         </div>
         <Tooltip id="Generada USUARIO" />
+        <label className="info-box-secondary info-grid-label" data-text={diferencia <= 0 ? "inyectando..." : "absorbiendo..."}>
+        </label>
         <div
           className={
             diferencia <= 0
@@ -199,17 +213,25 @@ const MisConsumosPanel = ({ id_community, logged_user }) => {
           data-tooltip-content="Inyectada USUARIO"
           data-tooltip-place="bottom"
         >
-          {isNaN(diferencia) ? "Cargando..." : `${parseFloat(diferencia).toFixed(2)} kW`}
+          {isNaN(diferencia)
+            ? "Cargando..."
+            : `${parseFloat(diferencia).toFixed(2)} kW`}
         </div>
         <Tooltip id="Inyectada USUARIO" />
-
+        <label className="info-box-secondary info-battery-label" data-text={bateria <= 0 ? "cargando..." : "descargando..."}></label>
         <div
           className="info-box info-battery"
           data-tooltip-id="Bateria USUARIO"
           data-tooltip-content="Bateria USUARIO"
           data-tooltip-place="bottom"
         >
-          {isNaN(bateria) ? "Cargando..." : `${parseFloat(bateria).toFixed(2)} kW`}
+          {isNaN(bateria)
+            ? "Cargando..."
+            : `${parseFloat(bateria).toFixed(2)} kW`}
+        </div>
+        <div className="info-box-secondary info-battery-f1">
+          <label>Batería: <b>15 kW</b></label>
+          <label>Capacidad de batería: <b>45 kWh</b></label>
         </div>
         <Tooltip id="Bateria USUARIO" />
       </div>

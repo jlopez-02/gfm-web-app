@@ -7,6 +7,16 @@
   width: max-content;
 }
 
+.info-box-secondary{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  position: absolute;
+  font-size: 0.8vw;
+  width: max-content;
+}
+
 
 .amarillo{
   background-color: yellow !important;
@@ -64,6 +74,32 @@
     .info-battery{
       left: 103%;
       top: 82%;
+    }
+
+    .info-grid-label{
+      font-style: italic;
+      font-size: 0.9rem;
+      color: gray;
+      left: 103%;
+      top: 46%;
+    }
+
+    .info-battery-label{
+      font-style: italic;
+      font-size: 0.9rem;
+      color: gray;
+      left: 103%;
+      top: 78%;
+    }
+
+    .info-battery-f1{
+      left: 80%;
+      top: 95%;
+    }
+
+    .info-solar-f1{
+      left: 80%;
+      top: -10%;
     }
 
     img {

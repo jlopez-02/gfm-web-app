@@ -20,3 +20,47 @@
   }
 }
 
+.loadingtext {
+  display: flex;
+  flex-direction: row;
+  span {
+    display: inline-block;
+    animation: loadingtext 1s infinite alternate;
+    @for $i from 1 through 14 {
+      &:nth-child(#{$i+1}) {
+        animation-delay: #{$i*.1}s;
+      }
+    }
+  }
+}
+
+.info-battery-label{
+  position: relative;
+  color: rgba(0, 0, 0, .3);
+}
+.info-battery-label:before {
+  content: attr(data-text);
+  position: absolute;
+  overflow: hidden;
+  max-width: 7em;
+  white-space: nowrap;
+  animation: loading 2s infinite;
+}
+
+.info-grid-label{
+  position: relative;
+  color: rgba(0, 0, 0, .3);
+}
+.info-grid-label:before {
+  content: attr(data-text);
+  position: absolute;
+  overflow: hidden;
+  max-width: 7em;
+  white-space: nowrap;
+  animation: loading 2s infinite;
+}
+@keyframes loading {
+  0% {
+      max-width: 0;
+  }
+}

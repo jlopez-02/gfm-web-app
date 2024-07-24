@@ -36,8 +36,6 @@ const ResumenPanel = ({ id_community, type_consumer, logged_user }) => {
   const energia_comprada = energia_consumida - energia_autoconsumida;
   const bateria_carga = bateriaCarga ? bateriaCarga[0].carga : 0;
   const bateria_descarga = bateriaDescarga ? bateriaDescarga[0].descarga : 0; 
-
-  console.log(energia_generada);
   
 
   return (
