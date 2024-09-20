@@ -12,7 +12,8 @@ const Generacion = ({
   handleLoad,
   loadKey,
   id_community,
-  openPopup
+  openPopup,
+  user_role
 }) => {
   const { data, selectedId, setSelectedId } = useGeneracionData({
     id_community,
@@ -129,7 +130,7 @@ const Generacion = ({
             />
             <GrafanaPanel
               title={"Ratio"}
-              src={urls.gen_ratio}
+              src={user_role === "admin" ? urls.gen_ratio : urls.gen_ratio_autoconsumo}
               onLoad={() => handlePanelLoad("Ratio")}
             />
           </div>

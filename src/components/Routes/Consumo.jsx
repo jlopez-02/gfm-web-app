@@ -13,6 +13,7 @@ const Consumo = ({
   loadKey,
   id_community,
   openPopup,
+  user_role
 }) => {
   const { data, selectedId, setSelectedId } = useConsumoData({ id_community });
   const [panelsLoaded, setPanelsLoaded] = useState({});
@@ -127,7 +128,7 @@ const Consumo = ({
             />
             <GrafanaPanel
               title={"Ratio"}
-              src={urls.cons_ratio}
+              src={ user_role === "admin" ?  urls.cons_ratio : urls.cons_ratio_autoconsumo} 
               onLoad={() => handlePanelLoad("Ratio")}
             />
           </div>

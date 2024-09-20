@@ -10,10 +10,17 @@ const MisDatos = ({
   id_community,
   type_consumer,
   logged_user,
-  openPopup,
+  name_label,
+  user_role,
+  id,
 }) => {
   const urls = generateGrafanaUrls(theme);
-
+  console.log(user_role);
+  console.log(id);
+  console.log(type_consumer);
+  
+  
+  
   return (
     <div className="mis-datos-container">
       <div className="mis-consumos-container">
@@ -21,6 +28,10 @@ const MisDatos = ({
           <MisConsumosPanel
             id_community={id_community}
             logged_user={logged_user}
+            name_label={name_label}
+            id={id}
+            user_role={user_role}
+            type_consumer={type_consumer}
           />
         </div>
       </div>
@@ -30,6 +41,8 @@ const MisDatos = ({
             id_community={id_community}
             type_consumer={type_consumer}
             logged_user={logged_user}
+            user_role={user_role}
+            id={id}
           />
         </div>
 

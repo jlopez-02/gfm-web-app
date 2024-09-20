@@ -27,7 +27,7 @@ const useGeneralData = (id_community) => {
     const totalEnergyQuery = {
       db: "venus",
       query: `
-        select sum(v1)/1000 from (select last(value) as v1 from venus where subtopic=~ /pvinverter\\/.*\\/Ac\\/Power/ and ID_COMMUNITY ='${id_community}' group by subtopic) group by ID_BUILDING order by desc limit 1
+        select last(v2)/1000 from (select sum(v1) as v2 from (select mean(value) as v1 from venus where subtopic=~ /pvinverter\\/.*\\/Ac\\/Power/ and ID_COMMUNITY ='${id_community}' and time>now()-1m group by subtopic, time(10s)) group by time(10s))
       `,
     };
     const totalEnergyData = await fetchFloatDataFromDB(
@@ -48,7 +48,11 @@ const useGeneralData = (id_community) => {
     const consQuery2 = {
       db: "venus",
       query: `
-        select sum(v3)/1000 from (select mean(value) as v3 from venus where subtopic=~ /system\\/0\\/Ac\\/Consumption\\/.*\\/Power/ and ID_COMMUNITY='${id_community}' group by subtopic, ID_BUILDING, time(1m)) group by ID_BUILDING, time(1m) fill(0) order by desc limit 1`,
+        select last(v3)/1000 as v3, ID_BUILDING as ID_DEVICE from 
+        (select sum(v3) as v3 from (select mean(value) as v3 from venus 
+        where subtopic=~ /system\\/0\\/Ac\\/Consumption\\/.*\\/Power/ and ID_COMMUNITY='${id_community}' 
+        group by subtopic, ID_BUILDING, time(1m)) group by ID_BUILDING, time(1m) fill(previous))
+        `,
     };
     const consumptionData1 = await fetchFloatDataFromDB(
       consQuery1,
@@ -81,26 +85,27 @@ const useGeneralData = (id_community) => {
     setCargador(cargadorData);
   };
 
-  const fetchInyectada = async () => {
-    const injectQuery = {
-      db: "venus",
-      query: `
-        select sum(v1)/1000 as energia_autoconsumida from (select mean(value) as v1 from venus where subtopic=~ /system\\/0\\/Ac\\/Consumption\\/.*\\/Power/ and ID_COMMUNITY='${id_community}' and time>now()-1d group by subtopic, ID_BUILDING, time(1h)) group by time(1d) order by desc limit 1
-      `,
-    };
-    const injectData = await fetchFloatDataFromDB(
-      injectQuery,
-      defaultValue,
-      "energia_inyectada"
-    );
-    setEnergiaInyectada(injectData);
-  };
+  // const fetchInyectada = async () => {
+  //   const injectQuery = {
+  //     db: "venus",
+  //     query: `
+  //       select sum(v1)/1000 as energia_autoconsumida from (select mean(value) as v1 from venus where subtopic=~ /system\\/0\\/Ac\\/Consumption\\/.*\\/Power/ and ID_COMMUNITY='${id_community}' and time>now()-1d group by subtopic, ID_BUILDING, time(1h)) group by time(1d) order by desc limit 1
+  //     `,
+  //   };
+  //   const injectData = await fetchFloatDataFromDB(
+  //     injectQuery,
+  //     defaultValue,
+  //     "energia_inyectada"
+  //   );
+  //   setEnergiaInyectada(injectData);
+  // };
 
   const fetchBateriaCarga = async () => {
     const cargaQuery = {
       db: "venus",
       query: `
-        select sum(v3)/1000 from (select mean(value) as v3 from venus where subtopic=~ /system\\/0\\/Dc\\/Battery\\/Power/ and ID_COMMUNITY='${id_community}' group by subtopic, ID_BUILDING, time(1m)) group by ID_BUILDING, time(1m) fill(previous) order by desc limit 1`,
+      select last(value)/1000 from venus where subtopic=~ /system\\/0\\/Dc\\/Battery\\/Power/ and ID_COMMUNITY='${id_community}' 
+`,
     };
     const cargaData = await fetchFloatDataFromDB(
       cargaQuery,
@@ -111,11 +116,12 @@ const useGeneralData = (id_community) => {
   };
 
   const fetchData = async () => {
+    await fetchBateriaCarga();
     await fetchAndSetTotalEnergy();
     await fetchConsumoTotalComunidad();
     await fetchCargador();
     //await fetchInyectada();
-    await fetchBateriaCarga();
+    
   };
 
   useEffect(() => {

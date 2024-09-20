@@ -1,6 +1,6 @@
 import React from "react";
 import GFM_logo from "../../assets/GFM_logo.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleHalfStroke,
@@ -8,6 +8,9 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Header.css";
+import LoginDropdown from "../Dropdown/LoginDropdown";
+import useLoginData from "../../hooks/useLoginData";
+import IP_ADDRESS from "../../misc/config";
 
 const Header = ({
   changeTheme,
@@ -16,7 +19,61 @@ const Header = ({
   handleLogout,
   userName,
   community,
+  type_consumer,
+  name_label,
+  setIdUsuarioPanel,
+  setUserRoleUsuarioPanel,
+  setTypeConsumerUsuarioPanel
 }) => {
+  const { data, selectedItem, setSelectedItem } = useLoginData();
+  const location = useLocation();
+  
+  const onButtonClick = () => {
+
+    const query = `select ID, role_USER, type_CONSUMER from user_info where ID='${selectedItem.id}' order by desc LIMIT 1`;
+    const url = `http://${IP_ADDRESS}:8086/query?db=user_info&q=${encodeURIComponent(
+      query
+    )}`;
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Basic " + btoa(":"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.results[0]?.series) {
+          const userExists = data.results[0]?.series[0]?.values.length > 0;
+          if (userExists) {
+            const user = data.results[0]?.series[0]?.values[0];
+            const [
+              ,
+              // time
+              id,
+              role_USER,
+              type_consumer,
+            ] = user;
+
+            setIdUsuarioPanel(id);
+            setUserRoleUsuarioPanel(role_USER);
+            setTypeConsumerUsuarioPanel(type_consumer);
+
+          } else {
+          }
+        } else {
+          
+        }
+      })
+      .catch((error) => {
+        console.error("Error querying InfluxDB:", error);
+        alert("Error al iniciar sesión");
+      });
+
+      console.log("click");
+      
+  };
+
   return (
     <div className="header">
       <nav>
@@ -31,14 +88,15 @@ const Header = ({
               </NavLink>
             </li>
           )}
-          {userRole === "admin" && (
+          {(userRole === "admin" || type_consumer !== "residencial") && (
             <li>
               <NavLink to="/generacion" onClick={reloadComponents}>
                 Generación
               </NavLink>
             </li>
           )}
-          {userRole === "admin" && (
+          {(userRole === "admin" ||
+            (userRole === "user" && type_consumer === "residencial")) && (
             <li>
               <NavLink to="/consumo" onClick={reloadComponents}>
                 Consumo
@@ -67,24 +125,27 @@ const Header = ({
             </li>
           )}
 
+          {location.pathname === "/usuario" && userRole === "admin" && (
+            <li className="user-data-header separator">
+              <LoginDropdown
+                label={""}
+                data={data}
+                selectedItem={selectedItem}
+                setSelectedItem={setSelectedItem}
+                admin={true}
+                onClick={onButtonClick}
+              />
+            </li>
+          )}
+
           <li className="user-data-header separator">
             <FontAwesomeIcon icon={faUsers} />
             <label>{community}</label>
           </li>
           <li className="user-data-header">
             <FontAwesomeIcon icon={faUser} />
-            <label>{userName}</label>
+            <label>{name_label}</label>
           </li>
-          {/* <li className="theme-icon-li">
-            <FontAwesomeIcon
-              className="theme-icon"
-              icon={faCircleHalfStroke}
-              onClick={() => {
-                changeTheme();
-                reloadComponents();
-              }}
-            />
-          </li> */}
 
           <li className="logout">
             <a href="/" onClick={handleLogout}>

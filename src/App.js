@@ -32,6 +32,8 @@ function App() {
   const [delayedLoad, setDelayedLoad] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
   const [loginUsername, setLoginUserName] = useState(null);
+  const [nameLabel, setNameLabel] = useState(null);
+  const [id, setId] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [user_id, setUserId] = useState(null);
 
@@ -51,6 +53,10 @@ function App() {
   const [community_id, setCommunityId] = useState(null);
   const [type_consumer, setTypeConsumer] = useState(null);
 
+  const[idUsuarioPanel, setIdUsuarioPanel] = useState(null);
+  const[userRoleUsuarioPanel, setUserRoleUsuarioPanel] = useState(null);
+  const[typeConsumerUsuarioPanel, setTypeConsumerUsuarioPanel] = useState(null);
+
   const handleLoad = () => {
     setLoaded(true);
     setTimeout(() => {
@@ -67,14 +73,19 @@ function App() {
   const [theme, toggleTheme] = useTheme();
 
   useEffect(() => {
+    const id = localStorage.getItem("id");
     const loginUsername = localStorage.getItem("name_user");
+    const name_label = localStorage.getItem("name_label");
     const auth = localStorage.getItem("auth");
     const role = localStorage.getItem("role");
     const user_id = localStorage.getItem("user_id");
     const community_id = localStorage.getItem("community_id");
     const type_consumer = localStorage.getItem("type_consumer");
+    
 
+    setId(id);
     setLoginUserName(loginUsername);
+    setNameLabel(name_label);
     setIsAuth(auth === "true");
     setUserRole(role);
     setUserId(user_id);
@@ -83,14 +94,18 @@ function App() {
   }, []);
 
   const handleLogout = () => {
+    localStorage.removeItem("id");
     localStorage.removeItem("name_user");
+    localStorage.removeItem("name_label");
     localStorage.removeItem("auth");
     localStorage.removeItem("role");
     localStorage.removeItem("user_id");
     localStorage.removeItem("community_id");
     localStorage.removeItem("type_consumer");
 
+    setId(null);
     setLoginUserName(null);
+    setNameLabel(null);
     setIsAuth(false);
     setUserRole(null);
     setUserId(null);
@@ -111,6 +126,11 @@ function App() {
               handleLogout={handleLogout}
               userName={loginUsername}
               community={community_id}
+              type_consumer={type_consumer}
+              name_label={nameLabel}
+              setIdUsuarioPanel={setIdUsuarioPanel}
+              setTypeConsumerUsuarioPanel={setTypeConsumerUsuarioPanel}
+              setUserRoleUsuarioPanel={setUserRoleUsuarioPanel}
             />
             <Routes>
               <Route
@@ -133,6 +153,7 @@ function App() {
                       loadKey={loadKey}
                       id_community={community_id}
                       openPopup={openPopup}
+                      user_role={userRole}
                     />
                   </ProtectedRoute>
                 }
@@ -149,6 +170,7 @@ function App() {
                       loadKey={loadKey}
                       id_community={community_id}
                       openPopup={openPopup}
+                      user_role={userRole}
                     />
                   </ProtectedRoute>
                 }
@@ -180,6 +202,9 @@ function App() {
                       id_community={community_id}
                       type_consumer={type_consumer}
                       logged_user={loginUsername}
+                      name_label={nameLabel}
+                      id={id}
+                      user_role={userRole}
                       openPopup={openPopup}
                     />
                   </ProtectedRoute>
@@ -220,10 +245,13 @@ function App() {
                 }
               />
               {userRole === "admin" ? (
-                <Route path="*" element={<Navigate to="/mapa" />} />
+                <Route path="*" element={<Navigate to="/usuario" />} />
+              ) : (userRole !== "admin" && type_consumer === "residencial") ? (
+                <Route path="*" element={<Navigate to="/usuario" />} />
               ) : (
                 <Route path="*" element={<Navigate to="/usuario" />} />
-              )}
+              )
+              }
               <Route path="*" element={<Navigate to="/mapa" />} />
             </Routes>
             {isPopupOpen && <Popup url={popupUrl} onClose={closePopup} />}
@@ -235,11 +263,13 @@ function App() {
               element={
                 <LoginForm
                   setLoginUserName={setLoginUserName}
+                  setNameLabel={setNameLabel}
                   setIsAuth={setIsAuth}
                   setUserRole={setUserRole}
                   setUserId={setUserId}
                   setCommunityId={setCommunityId}
                   setTypeConsumer={setTypeConsumer}
+                  setId={setId}
                 />
               }
             />

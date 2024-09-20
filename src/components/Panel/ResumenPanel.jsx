@@ -5,7 +5,7 @@ import RangeCalendar from "./../Calendar/RangeCalendar";
 import useResumenData from "../../hooks/useResumenData";
 import LoadingContainer from "../AuxComponents/LoadingContainer";
 
-const ResumenPanel = ({ id_community, type_consumer, logged_user }) => {
+const ResumenPanel = ({ id_community, type_consumer, logged_user, user_role, id }) => {
   const [precioKWH, setPrecioKWH] = useState(localStorage.getItem("precioKWH") ? localStorage.getItem("precioKWH") : 1);
 
   const today = new Date();
@@ -20,7 +20,7 @@ const ResumenPanel = ({ id_community, type_consumer, logged_user }) => {
     localStorage.setItem("precioKWH", precioKWH);
   }, [precioKWH]);
 
-  const {isReady, energiaGenerada, energiaConsumida, bateriaCarga, bateriaDescarga } = useResumenData(id_community, startDate, endDate);
+  const {isReady, energiaGenerada, energiaConsumida, bateriaCarga, bateriaDescarga } = useResumenData(id_community, startDate, endDate, user_role, id);
   
   
 
@@ -36,6 +36,8 @@ const ResumenPanel = ({ id_community, type_consumer, logged_user }) => {
   const energia_comprada = energia_consumida - energia_autoconsumida;
   const bateria_carga = bateriaCarga ? bateriaCarga[0].carga : 0;
   const bateria_descarga = bateriaDescarga ? bateriaDescarga[0].descarga : 0; 
+  const ratio_autarquia = (parseFloat(energia_generada) + Math.abs(parseFloat(bateria_descarga)) - parseFloat(bateria_carga) - parseFloat(energia_inyectada)) / parseFloat(energiaConsumida) * 100;
+  //console.log(parseFloat(energia_generada), parseFloat(bateria_descarga), parseFloat(bateria_carga),parseFloat(energia_inyectada),parseFloat(energiaConsumida));
   
 
   return (
@@ -89,6 +91,10 @@ const ResumenPanel = ({ id_community, type_consumer, logged_user }) => {
           <div className="summary-item">
             <span>ENERGÍA DESCARGA BATERÍA</span>
             <span>{isNaN(bateria_descarga) ? "Cargando..." : `${parseFloat(Math.abs(bateria_descarga)).toFixed(2)} kWh`}</span>
+          </div>
+          <div className="summary-item">
+            <span>RATIO AUTARQUÍA</span>
+            <span>{isNaN(ratio_autarquia) ? "0.00%" : `${parseFloat(Math.abs(ratio_autarquia)).toFixed(2)} %`}</span>
           </div>
           <div className="summary-item">
             <NumberTextField

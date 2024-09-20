@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchFloatDataFromDB} from "../misc/fetch";
 
-const useGeneralData = (id_community, startDate, endDate) => {
+const useGeneralData = (id_community, startDate, endDate, user_role, id) => {
   const defaultValue = 0;
   
   const [isReady, setIsReady] = useState(false);
@@ -24,14 +24,16 @@ const useGeneralData = (id_community, startDate, endDate) => {
       setIsReady(true);
     }
   };
-
+  const isAdminVenus = user_role === "admin" ? "" : `and ID_BUILDING='${id}'`; 
+  const isAdminShelly = user_role === "admin" ? "" : `and ID_DEVICE='${id}'`;
+ 
   const fetchGenerada = async () => {
     const query = {
       db: "venus",
       query: `
         select sum(v1)/1000 as produccion_total from (select mean(value) 
         as v1 from venus where subtopic=~ /pvinverter\\/.*\\/Ac\\/Power/ 
-        and ID_COMMUNITY='${id_community}' and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by instanceNumber, time(1h)) 
+        and ID_COMMUNITY='${id_community}' ${isAdminVenus} and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by instanceNumber, time(1h)) 
       `,
     };
     const data = await fetchFloatDataFromDB(query, defaultValue, "generada");
@@ -43,7 +45,7 @@ const useGeneralData = (id_community, startDate, endDate) => {
       db: "shelly",
       query: `
         select sum(v1)/1000 as v1_shelly from (SELECT max(total_act)-min(total_act) as v1 FROM shelly 
-        where time >= now()-1d and ID_COMMUNITY='${id_community}' and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by ID_DEVICE, time(1d))
+        where time >= now()-1d and ID_COMMUNITY='${id_community}' ${isAdminShelly} and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by ID_DEVICE, time(1d))
 
       `,
     };
@@ -51,7 +53,7 @@ const useGeneralData = (id_community, startDate, endDate) => {
       db: "venus",
       query: `
         select sum(v1)/1000 from (select mean(value) as v1 from venus where subtopic=~ /system\\/0\\/Ac\\/Consumption\\/.*\\/Power/ 
-        and ID_COMMUNITY='${id_community}' and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1h), subtopic)
+        and ID_COMMUNITY='${id_community}' ${isAdminVenus} and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1h), subtopic)
       `,
     };
     const query3 = {
@@ -59,7 +61,7 @@ const useGeneralData = (id_community, startDate, endDate) => {
       query: `
         select sum(v1)/1000 from (select mean(value) 
         as v1 from venus where subtopic=~ /system\\/0\\/Dc\\/Battery\\/Power/ 
-        and ID_COMMUNITY='${id_community}' and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1h)) 
+        and ID_COMMUNITY='${id_community}' ${isAdminVenus} and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1h)) 
       `,
     };
     const query4 = {
@@ -88,7 +90,7 @@ const useGeneralData = (id_community, startDate, endDate) => {
       db: "venus",
       query: `
         select sum(v1)*1/60/1000 from (select mean(value) as v1 from venus where value>0 and 
-        subtopic='system/0/Dc/Battery/Power' and ID_COMMUNITY='${id_community}' 
+        subtopic='system/0/Dc/Battery/Power' and ID_COMMUNITY='${id_community}' ${isAdminVenus}
         and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1m) fill(0))  
       `,
     };
@@ -102,7 +104,7 @@ const useGeneralData = (id_community, startDate, endDate) => {
       db: "venus",
       query: `
         select sum(v1)*1/60/1000 from (select mean(value) as v1 from venus where value<0 and 
-        subtopic='system/0/Dc/Battery/Power' and ID_COMMUNITY='${id_community}' 
+        subtopic='system/0/Dc/Battery/Power' and ID_COMMUNITY='${id_community}' ${isAdminVenus}
         and time > ${startDate_ts}ms and time < ${endDate_ts}ms group by time(1m) fill(0))
       `,
     };

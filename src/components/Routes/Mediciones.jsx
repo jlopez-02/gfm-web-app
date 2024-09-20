@@ -5,7 +5,6 @@ const Mediciones = (selectedId) => {
 
   return (
     <div>
-      HOLA
     </div>
   );
 };

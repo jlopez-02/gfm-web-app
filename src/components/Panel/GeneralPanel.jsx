@@ -84,7 +84,10 @@ const GeneralPanel = ({ id_community }) => {
           <Tooltip id="Consumida COMUNIDAD" />
         </div>
         <div className="center-center">
-          <Arrows count={10} degrees={-90} />
+          <Arrows count={4} degrees={-90} />
+          <label>Comunidad</label>
+          <h1>0000</h1>
+          <Arrows count={4} degrees={-90} />
         </div>
         <div className="top-center">
           <div className="box">

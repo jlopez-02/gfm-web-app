@@ -31,7 +31,8 @@ const generateGrafanaUrls = (theme, selectedId, startDate, endDate, id_community
     gen_battery: `${gen_url}&panelId=14&${properties}`,
     gen_production: `${gen_url}&panelId=13&${properties}`,
     gen_power: `${gen_url}&panelId=15&${properties}`,
-    gen_ratio: `${gen_url}&panelId=16&${properties}`,
+    gen_ratio: `${gen_url}&panelId=19&${properties}`,
+    gen_ratio_autoconsumo: `${gen_url}&panelId=20&${properties}`,
     //URL CONSUMO
     cons_table_url: `${cons_url}&panelId=9&${properties}`,
     cons_selected_client: `${cons_url}&panelId=10&${cons_update_graphs_properties}&${properties}`,
@@ -40,7 +41,8 @@ const generateGrafanaUrls = (theme, selectedId, startDate, endDate, id_community
     cons_total_generation: `${cons_url}&panelId=11&${timestamp}&${properties}`,
     cons_battery: `${cons_url}&panelId=14&${properties}`,
     cons_production: `${cons_url}&panelId=13&${properties}}`,
-    cons_ratio: `${cons_url}&panelId=17&${properties}`,
+    cons_ratio: `${cons_url}&panelId=21&${properties}`,
+    cons_ratio_autoconsumo: `${cons_url}&panelId=22&${properties}`,
     cons_charger: `${cons_url}&panelId=16&${properties}`,
     //URL GENERAL
     general_url: `${general_url}&panelId=1&${properties}`,
